@@ -30,9 +30,6 @@ public class Ftp
             upload.upload();
 
             System.out.println("-------------文件上传完成的时间是：" + new Date() + "------------------");
-
-            //会立刻执行一次下载任务
-            //Thread.sleep(40000);
         }
         catch (InterruptedException e)
         {
