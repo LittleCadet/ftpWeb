@@ -2,10 +2,10 @@ package com.myproj.ftp;
 
 import com.myproj.tools.FtpUtil;
 import org.apache.commons.net.ftp.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.net.SocketException;
-import java.util.logging.Logger;
 
 /**
  * ftp上传操作
@@ -14,6 +14,7 @@ import java.util.logging.Logger;
  */
 public class FtpUpload
 {
+    private static final Logger logger = LoggerFactory.getLogger(FtpUpload.class.getName());
 
     private FTPClient client = FtpUtil.init();
 
@@ -35,6 +36,14 @@ public class FtpUpload
      */
     public Boolean upload()
     {
+        if(logger.isDebugEnabled())
+        {
+            logger.debug("method: FtpUpload.upload() is entering");
+        }
+        else
+        {
+            System.out.println("进入文件上传操作");
+        }
         Boolean flag = false;
 
         if(isNotNull())
@@ -46,6 +55,14 @@ public class FtpUpload
             }
         }
 
+        if(logger.isDebugEnabled())
+        {
+            logger.debug("method: FtpUpload.upload() was existed");
+        }
+        else
+        {
+            System.out.println("离开文件上传操作");
+        }
         return flag;
     }
 
@@ -82,21 +99,37 @@ public class FtpUpload
             // ftp路径:路径必须具体到文件，否则上传不成功
             String remote = (!remoteUploadFilePath.endsWith(SPLIT_FORWARD_SLASH) ? remoteUploadFilePath + SPLIT_FORWARD_SLASH : remoteUploadFilePath) + fileName;
 
-            System.out.println("正在用ftp上传指定文件到服务器");
+            if(logger.isDebugEnabled())
+            {
+                logger.debug("method: FtpUpload.uploadFileToFtp():ftp is uploading thr file to server");
+            }
+            else
+            {
+                System.out.println("正在用ftp上传指定文件到服务器");
+            }
 
             //用ftpClient上传到服务器
             flag = client.storeFile(remote, is);
 
-            System.out.println("用ftp传输二进制文件" +(flag.toString().equals("true") ?"成功":"失败"));
+            if(logger.isDebugEnabled())
+            {
+                logger.debug("method: FtpUpload.uploadFileToFtp(): binary file uploaded " + (flag.toString().equals("true") ?"成功":"失败"));
+            }
+            else
+            {
+                System.out.println("用ftp传输二进制文件" +(flag.toString().equals("true") ?"成功":"失败"));
+            }
         }
         catch (FileNotFoundException e)
         {
+            logger.error("method: FtpUpload.uploadFileToFtp(): uploadFileToFtp:failed,localUploadFilePath:"+localUploadFilePath+",\nexception:"+e);
             System.out.println("uploadFileToFtp:failed,localUploadFilePath:"+localUploadFilePath+",\nexception:"+e);
 
             return false;
         }
         catch (IOException e)
         {
+            logger.error("method: FtpUpload.uploadFileToFtp(): uploadFileToFtp:failed"+",\nexception:"+e);
             System.out.println("uploadFileToFtp:failed"+",\nexception:"+e);
 
             return false;
@@ -128,21 +161,43 @@ public class FtpUpload
             //如果文件不存在，则创建目录
             if (!client.changeWorkingDirectory(remoteUploadFilePath) )
             {
-                System.out.println("正在用ftp在服务器上创建目录：");
+                if(logger.isDebugEnabled())
+                {
+                    logger.debug("method :FtpLoad.mkDir(): it is creating directory");
+                }
+                else
+                {
+                    System.out.println("正在用ftp在服务器上创建目录：");
+                }
 
                 //在shell根目录下创建文件夹
                 flag = client.makeDirectory(packageName);
 
-                System.out.println("在服务器创建文件夹" +(flag.toString().equals("true") ?"成功":"失败")+",文件夹名称:" + packageName);
+                if(logger.isDebugEnabled())
+                {
+                    logger.debug("method :FtpLoad.mkDir():creating deirectory was " + (flag.toString().equals("true") ?"successed!":"failed !") + ",directory name is " + packageName);
+                }
+                else
+                {
+                    System.out.println("在服务器创建文件夹" +(flag.toString().equals("true") ?"成功":"失败")+",文件夹名称:" + packageName);
+                }
             }
             else
             {
-                System.out.println("在服务器已存在该文件夹！");
+                if(logger.isDebugEnabled())
+                {
+                    logger.debug("method :FtpLoad.mkDir(): the directory is existed");
+                }
+                else
+                {
+                    System.out.println("在服务器已存在该文件夹！");
+                }
             }
         }
         catch (IOException e)
         {
-            System.out.println("mkDir:fail,remoteUploadFilePath:"+remoteUploadFilePath+",\nexception:"+e);
+            logger.error("mthod:mkDir:fail,remoteUploadFilePath:"+remoteUploadFilePath+",\nexception:"+e);
+            System.out.println("mthod:mkDir:fail,remoteUploadFilePath:"+remoteUploadFilePath+",\nexception:"+e);
         }
     }
 
@@ -155,12 +210,14 @@ public class FtpUpload
         if(null == remoteUploadFilePath)
         {
             System.out.println("remoteUploadFilePath为空，上传操作停止");
+            logger.error("method:FtpUpload.isNotNull():remoteUploadFilePath is null,operation of uploading is stopping");
             return false;
         }
 
         if(null == localUploadFilePath)
         {
             System.out.println("localUploadFilePath为空，上传操作停止");
+            logger.error("method:FtpUpload.isNotNull():localUploadFilePath is null,operation of uploading is stopping");
             return false;
         }
         return true;

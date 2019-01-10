@@ -3,6 +3,8 @@ package com.myproj.ftp;
 import com.myproj.tools.FtpUtil;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 import java.io.*;
@@ -15,6 +17,8 @@ import java.util.*;
  **/
 public class FtpBatchUpload
 {
+    private static final Logger logger = LoggerFactory.getLogger(FtpBatchUpload.class.getName());
+
     private FTPClient client = FtpUtil.init();
 
     //指定上传到服务器的路径
