@@ -60,7 +60,6 @@ public class FtpUtil
             }
 
             logger.error("method:FtpUtil.connectToFtp():failure times :" + (i+1) +",host is " + host);
-            System.out.println("第" + (i+1) + "次连接失败：ip："+host);
         }
 
         return false;
@@ -87,10 +86,6 @@ public class FtpUtil
                     {
                         logger.debug("method:FtpUtil.connectToFtpProcess():login " +(flag.toString().equals("true") ? "seccuss!" : "fail!"));
                     }
-                    else
-                    {
-                        System.out.println("用户登录ftp" +(flag.toString().equals("true") ?"成功":"失败"));
-                    }
                 }
 
                 if(!flag)
@@ -99,7 +94,6 @@ public class FtpUtil
                     client.disconnect();
 
                     logger.error("method:FtpUtil.connectToFtpProcess():login failed:userName:" +account + ",password:"+password );
-                    System.out.println("connectToFtp,login ftp failed,userName:"+account + ",password:"+password);
 
                     return false;
                 }
@@ -112,7 +106,6 @@ public class FtpUtil
             catch (IOException e)
             {
                 logger.error("method:FtpUtil.connectToFtpProcess(): connectToFtp, failed,userName:" + account + ",password:"+password+",\nexception:"+e );
-                System.out.println("connectToFtp, failed,userName:"+account + ",password:"+password+",\nexception:"+e);
                 return false;
             }
             return true;
@@ -148,11 +141,6 @@ public class FtpUtil
                 {
                     logger.debug("method:FtpUtil.closeResources(): user was logout");
                 }
-                else
-                {
-                    System.out.println("用ftp注销用户成功！\n正在断开ftp连接");
-                }
-
 
                 //ftpClient断开连接
                 client.disconnect();
@@ -161,16 +149,11 @@ public class FtpUtil
                 {
                     logger.debug("method:FtpUtil.closeResources(): ftp was disconnected");
                 }
-                else
-                {
-                    System.out.println("ftp连接已断开");
-                }
             }
         }
         catch (IOException e)
         {
             logger.error("method: Ftputil.closeResources:closeResources:fail,\n the status of ftpClient："+(String.valueOf(client.isConnected()).equals(Boolean.TRUE)?"connect":"disconnect"+ ",\nexception:"+e));
-            System.out.println("closeResources:fail,\n the status of ftpClient："+(String.valueOf(client.isConnected()).equals(Boolean.TRUE)?"connect":"disconnect"+",\nexception:"+e));
         }
     }
 

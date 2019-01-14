@@ -3,6 +3,8 @@ package com.myproj.ftp;
 import com.myproj.tools.FtpUtil;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -16,6 +18,8 @@ import java.util.Date;
  */
 public class FtpDownload
 {
+    private static final Logger logger = LoggerFactory.getLogger(FtpDownload.class.getName());
+
     private static FTPClient client = FtpUtil.init();
 
     //指定下载的服务器的路径
@@ -31,7 +35,7 @@ public class FtpDownload
     private static final String SPLIT_FORWARD_SLASH = "/";
 
     //计数：ftp下载动作一共执行多少次
-    private static int count ;
+    private static Integer count = 0;
 
     /**
      * 下载文件
@@ -49,12 +53,15 @@ public class FtpDownload
                 //下载操作
                 flag = downloadProcess();
 
-                System.out.println("------------文件下载在此时执行过一次："+ new Date() + "------------");
-
                 count ++;
-
-                System.out.println("------------文件下载目前一共执行过"+ count + "次------------");
             }
+        }
+
+        if(logger.isDebugEnabled())
+        {
+            logger.debug("------------downloaded file in" + new Date() + "------------");
+            logger.debug("------------downloaded times are" + count + "times------------");
+            logger.debug("method: download() was existed");
         }
         return flag;
 
@@ -90,26 +97,31 @@ public class FtpDownload
             //当指定的文件在服务器上不存在时，终止下载操作
             if(!isRemoteDir())
             {
-                System.out.println("服务器上不存在该文件，停止下载");
+                logger.error("method : downloadProcess():file not exist,stop download");
 
                 //关闭资源
                 FtpUtil.closeResources(null, os, client);
 
-                System.exit(0);
+                return false;
             }
 
-            System.out.println("用ftp下载开始");
+            if(logger.isDebugEnabled())
+            {
+                logger.debug("method : downloadProcess():ftp download is starting");
+            }
 
             //下载操作
             flag = client.retrieveFile(fileName,os);
 
 
-
-            System.out.println("用ftp下载"+(String.valueOf(flag).equals("true")?"成功！":"失败！"));
+            if(logger.isDebugEnabled())
+            {
+                logger.debug("method : downloadProcess():ftp download" +(String.valueOf(flag).equals("true")?"success!":"fail!"));
+            }
         }
         catch (IOException e)
         {
-            System.out.println("something wrong with io exception,exception:"+e + "localDownloadFilePath:"+localDownloadFilePath);
+            logger.error("method : downloadProcess():something wrong with io exception,exception:"+e + "localDownloadFilePath:"+localDownloadFilePath);
 
             return false;
         }
@@ -136,12 +148,12 @@ public class FtpDownload
             //判定目录是否存在
             if(!client.changeWorkingDirectory(remoteDir))
             {
-                System.out.println("服务器上不存在该目录，停止下载");
+
+                logger.error("method : isRemoteDir():file not exist,stop download");
 
                 //关闭资源
                 FtpUtil.closeResources(null, null, client);
 
-                System.exit(0);
                 return false;
             }
 
@@ -157,7 +169,7 @@ public class FtpDownload
         }
         catch (IOException e)
         {
-            System.out.println("something wrong in ftp operation ,exception:"+e);
+            logger.error("method : isRemoteDir():something wrong in ftp operation ,exception:" + e);
 
             return false;
         }
@@ -179,7 +191,10 @@ public class FtpDownload
 
         if (!localFile.exists())
         {
-            System.out.println("本地文件目录创建" + (String.valueOf(localFile.mkdir()).equals("true") ? "成功！" : "失败！"));
+            if(logger.isDebugEnabled())
+            {
+                logger.debug("method : isLocalDir():create local directory" + (String.valueOf(localFile.mkdir()).equals("true") ? "success!" : "fail!") );
+            }
         }
 
         if(!SPLIT_BACKSLASH.equals(localDownloadFilePath.substring(localDownloadFilePath.lastIndexOf(SPLIT_BACKSLASH))))
@@ -201,14 +216,13 @@ public class FtpDownload
     {
         if(null == remoteDownloadFilePath)
         {
-            System.out.println("remoteDownloadFilePath为空，下载操作停止");
-
+            logger.error("method :isNotNull()：remoteDownloadFilePath is null , stop download");
             return false;
         }
 
         if(null == localDownloadFilePath)
         {
-            System.out.println("localDownloadFilePath为空，下载操作停止");
+            logger.error("method :isNotNull():localDownloadFilePath is null , stop download");
             return false;
         }
         return true;
