@@ -60,7 +60,7 @@ public class FtpUpload
         if(logger.isDebugEnabled())
         {
             logger.debug("------------uploaded file in" + new Date() + "------------");
-            logger.debug("------------uploaded times are" + count + "times------------");
+            logger.debug("------------uploaded times:  " + count + "  times------------");
             logger.debug("method: upload() was existed");
         }
         return flag;

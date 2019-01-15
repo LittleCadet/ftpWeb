@@ -3,6 +3,8 @@ package com.myproj.ftp;
 import com.myproj.tools.FtpUtil;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 import java.io.BufferedReader;
@@ -19,6 +21,8 @@ import java.util.List;
  **/
 public class FtpBatchDelete
 {
+    private static final Logger logger = LoggerFactory.getLogger(FtpBatchDownload.class.getName());
+
     private FTPClient client = FtpUtil.init();
 
     //分隔符“/”
@@ -93,19 +97,22 @@ public class FtpBatchDelete
                 }
                 else
                 {
-                    System.out.println("因该文件上级目录不存在，所以该文件不存在，无需删除");
+                    logger.error("file not exist,no need to delete");
                     return true;
                 }
             }
             if(CollectionUtils.isEmpty(fails))
             {
-                System.out.println("--------------全部删除成功--------------");
+                if(logger.isDebugEnabled())
+                {
+                    logger.debug("method: deleteProcess():--------------All files delete successfully--------------");
+                }
             }
             else
             {
                 for(String remoteDeleteFilePath : fails)
                 {
-                    System.out.println("在服务器上删除失败的文件路径："+remoteDeleteFilePath);
+                    logger.error("method: deleteProcess():failed to delete remote file path:" + remoteDeleteFilePath);
                 }
             }
             if(flags.contains(false))
@@ -115,8 +122,7 @@ public class FtpBatchDelete
         }
         catch (IOException e)
         {
-            System.out.println("something wrong with changing directory by ftp：exception:" + e);
-
+            logger.error("method: deleteProcess():something wrong with changing directory by ftp：exception:" + e);
             return false;
         }
         finally
@@ -138,7 +144,10 @@ public class FtpBatchDelete
 
         List<Integer> isExists = new ArrayList<Integer>();
 
-        System.out.println("开始删除指定文件：指定文件路径：" + remoteDeleteFilePath + ",文件名称：" + fileName);
+        if(logger.isDebugEnabled())
+        {
+            logger.debug("method: deleteDetailProcess():start to delete file: file path:" +remoteDeleteFilePath + ",file name is:"+fileName);
+        }
 
         // 检验文件夹是否存在:通过删除该文件的方式来判定，如果返回码为250，则删除该文件成功，那么代表该文件夹存在,返回码为550，代表删除失败
         try
@@ -148,7 +157,10 @@ public class FtpBatchDelete
             {
                 isExist = client.dele(fileName);
 
-                System.out.println("该文件在服务器中" + (isExist == 250 ? "删除成功" : "不存在") + ",文件名称:" + fileName);
+                if(logger.isDebugEnabled())
+                {
+                    logger.debug("method: deleteDetailProcess():file:" + (isExist == 250 ? "delete successfully" : "not exist") + ",file name is:" + fileName);
+                }
             }
             else
             {
@@ -171,7 +183,10 @@ public class FtpBatchDelete
                         fails.add(remoteDeleteFilePath + SPLIT_FORWARD_SLASH +file.getName());
                     }
 
-                    System.out.println("该文件在服务器中" + (isExist == 250 ? "删除成功" : "不存在") + ",文件名称:" + file.getName());
+                    if(logger.isDebugEnabled())
+                    {
+                        logger.debug("method: deleteDetailProcess():file:" + (isExist == 250 ? "delete successfully" : "not exist") + ",file name is:" + fileName);
+                    }
                 }
 
                 //只要有删除失败，那么就直接赋值为500（失败）
@@ -183,8 +198,7 @@ public class FtpBatchDelete
         }
         catch (IOException e)
         {
-            System.out.println(
-                "failed to delete file by ftp ：remoteDeleteFilePath：" + remoteDeleteFilePath + ",exception:" + e);
+            logger.error("method: deleteDetailProcess():failed to delete file by ftp ：remoteDeleteFilePath：" + remoteDeleteFilePath + ",exception:" + e);
 
             isExist = 500;
         }
@@ -214,21 +228,18 @@ public class FtpBatchDelete
 
             if (CollectionUtils.isEmpty(remoteDeleteFilePaths))
             {
-                System.out.println("批量删除文件的路径为空，将停止删除操作");
-
+                logger.error("method: isNotNull():batch delete files are null,stop to delete");
                 return false;
             }
         }
         catch (FileNotFoundException e)
         {
-            System.out.println("method:isNotNull is failed,e" + e);
-
+            logger.error("method: isNotNull():method:isNotNull is failed,e" + e);
             return false;
         }
         catch (IOException e)
         {
-            System.out.println("IO operation is failed,e" + e);
-
+            logger.error("method: isNotNull():IO operation is failed,e" + e);
             return false;
         }
         finally
@@ -241,7 +252,7 @@ public class FtpBatchDelete
                 }
                 catch (IOException e)
                 {
-                    System.out.println("io close exception,e:" + e);
+                    logger.error("method: isNotNull():io close exception,e:" + e);
                 }
             }
         }

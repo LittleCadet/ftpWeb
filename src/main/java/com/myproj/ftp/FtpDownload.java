@@ -60,7 +60,7 @@ public class FtpDownload
         if(logger.isDebugEnabled())
         {
             logger.debug("------------downloaded file in" + new Date() + "------------");
-            logger.debug("------------downloaded times are" + count + "times------------");
+            logger.debug("------------downloaded times:  " + count + "  times------------");
             logger.debug("method: download() was existed");
         }
         return flag;

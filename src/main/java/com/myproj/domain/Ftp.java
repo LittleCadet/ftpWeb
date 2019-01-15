@@ -9,7 +9,7 @@ import org.springframework.context.ApplicationContext;
 import java.util.Date;
 
 /**
- * Ftp的实体类
+ * 让tomcat 调用
  * 沈燮
  * 2019/1/3
  **/

@@ -172,7 +172,7 @@ public class ScanDirectory
         {
             if(logger.isDebugEnabled())
             {
-                logger.debug("method :scanProcess(): ------------scaning file time" + count + "times------------------");
+                logger.debug("method :scanProcess(): ------------scaning file time： " + count + " times------------------");
                 logger.debug("method :scanProcess(): ------------scaning file time" + new Date() + "------------------");
                 logger.debug("method :scanProcess(): ------------file was updated in server,start to download------------------");
                 logger.debug("method :scanProcess(): ------------download"+(String.valueOf(FtpDownload.download()).equals("true")?"success":"fail")+" by scan task------------------");
@@ -182,7 +182,7 @@ public class ScanDirectory
         {
             if(logger.isDebugEnabled())
             {
-                logger.debug("method :scanProcess(): ------------scaning file time" + count + "times------------------");
+                logger.debug("method :scanProcess(): ------------scaning file time： " + count + " times------------------");
                 logger.debug("method :scanProcess(): ------------scaning file time" + new Date() + "------------------");
                 logger.debug("method :scanProcess(): ------------file not update in server,no need to download------------------");
             }

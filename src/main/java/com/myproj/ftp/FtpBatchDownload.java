@@ -3,6 +3,8 @@ package com.myproj.ftp;
 import com.myproj.tools.FtpUtil;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 import java.io.*;
@@ -15,6 +17,8 @@ import java.util.*;
  **/
 public class FtpBatchDownload
 {
+    private static final Logger logger = LoggerFactory.getLogger(FtpBatchDownload.class.getName());
+
     private FTPClient client = FtpUtil.init();
 
     //分隔符‘\’
@@ -108,7 +112,10 @@ public class FtpBatchDownload
                             //判定本地目录是否存在,不存在，则创建目录
                             localDownloadFilePath = isLocalDir(remoteDownloadFilePath,entry.getValue());
 
-                            System.out.println("remoteDownloadFilePath:" + remoteDownloadFilePath + "\n" + "localDownloadFilePath:" + localDownloadFilePath);
+                            if(logger.isDebugEnabled())
+                            {
+                                logger.debug("method: downloadProcess():remoteDownloadFilePath:" + remoteDownloadFilePath + "\n" + "localDownloadFilePath:" + localDownloadFilePath);
+                            }
 
                             //下载细节处理
                             result = detailProcess(os,localDownloadFilePath,remoteDownloadFilePath,result);
@@ -119,7 +126,10 @@ public class FtpBatchDownload
                         //判定本地目录是否存在,不存在，则创建目录
                         localDownloadFilePath = isLocalDir(remoteDownloadFilePath,localDownloadFilePath);
 
-                        System.out.println("remoteDownloadFilePath:" + remoteDownloadFilePath + "\n" + "localDownloadFilePath:" + localDownloadFilePath);
+                        if(logger.isDebugEnabled())
+                        {
+                            logger.debug("method: downloadProcess():remoteDownloadFilePath:" + remoteDownloadFilePath + "\n" + "localDownloadFilePath:" + localDownloadFilePath);
+                        }
 
                         //下载细节处理
                         //如果remoteDownloadFilePath是文件，则直接下载即可
@@ -128,15 +138,36 @@ public class FtpBatchDownload
                 }
                 else
                 {
-                    System.out.println("ftpBatchDownload.txt中的数据有异常：服务器的路径不包含“/”，请及时处理");
+                    logger.error("method: downloadProcess():data not correct in ftpBatchDownload.txt: remote file should have “/”,please handle it");
                 }
 
+            }
+
+            if (!CollectionUtils.isEmpty(fails))
+            {
+                logger.error("method: downloadProcess()::****************failed to download file path****************");
+                for (Map.Entry<String, String> fail : fails.entrySet())
+                {
+                    logger.error("remoteDownloadFilePath:" + fail.getKey());
+                    logger.error("localDownloadFilePath:" + fail.getValue());
+                }
+            }
+            else
+            {
+                if(logger.isDebugEnabled())
+                {
+                    logger.debug("method: downloadProcess():All files downlaoded successfully");
+                }
+            }
+
+            if (result.contains(false))
+            {
+                return false;
             }
         }
         catch (IOException e)
         {
-            System.out.println("something wrong with io exception,exception:"+e + "localDownloadFilePath:"+localDownloadFilePath);
-
+            logger.error("method: downloadProcess():something wrong with io exception,exception:"+e + "localDownloadFilePath:"+localDownloadFilePath);
             return false;
         }
         finally
@@ -145,24 +176,7 @@ public class FtpBatchDownload
             FtpUtil.closeResources(null, os, client);
         }
 
-        if (!CollectionUtils.isEmpty(fails))
-        {
-            System.out.println("****************下载失败的文件路径****************");
-            for (Map.Entry<String, String> fail : fails.entrySet())
-            {
-                System.out.println("remoteDownloadFilePath:" + fail.getKey());
-                System.out.println("localDownloadFilePath:" + fail.getValue());
-            }
-        }
-        else
-        {
-            System.out.println("--------------全部下载成功--------------");
-        }
 
-        if (result.contains(false))
-        {
-            return false;
-        }
 
         return true;
     }
@@ -181,7 +195,7 @@ public class FtpBatchDownload
             //判定目录是否存在
             if(!client.changeWorkingDirectory(remoteDir))
             {
-                System.out.println("服务器上不存在该目录，停止下载");
+                logger.error("method: isRemoteDir():directory not exist,stop to download");
 
                 //关闭资源
                 FtpUtil.closeResources(null, null, client);
@@ -201,8 +215,7 @@ public class FtpBatchDownload
         }
         catch (IOException e)
         {
-            System.out.println("something wrong in ftp operation ,exception:"+e);
-
+            logger.error("method: isRemoteDir():something wrong in ftp operation ,exception:"+e);
             return false;
         }
 
@@ -221,7 +234,10 @@ public class FtpBatchDownload
 
         if (!localFile.exists())
         {
-            System.out.println("本地文件目录创建" + (String.valueOf(localFile.mkdir()).equals("true") ? "成功！" : "失败！"));
+            if(logger.isDebugEnabled())
+            {
+                logger.debug("method:isLocalDir():creating local directory " + (String.valueOf(localFile.mkdir()).equals("true") ? "success！" : "fail！"));
+            }
         }
 
         if(!SPLIT_BACKSLASH.equals(localDownloadFilePath.substring(localDownloadFilePath.lastIndexOf(SPLIT_BACKSLASH))))
@@ -241,7 +257,6 @@ public class FtpBatchDownload
      */
     public boolean preProcess()
     {
-
         BufferedReader br = null;
         try
         {
@@ -271,8 +286,7 @@ public class FtpBatchDownload
                     }
                     else if(line.contains(SPLIT_BACKSLASH) || line.contains(SPLIT_FORWARD_SLASH))
                     {
-                        System.out.println("在ftpBatchUpload.txt文件中的数据有异常，请及时处理！");
-
+                        logger.error("method:preProcess():data not correct in ftpBatchUpload.txt,please handle it");
                         return false;
                     }
                 }
@@ -280,14 +294,12 @@ public class FtpBatchDownload
         }
         catch (FileNotFoundException e)
         {
-            System.out.println("processData failed in IO operation,e" + e);
-
+            logger.error("method:preProcess():processData failed in IO operation,e" + e);
             return false;
         }
         catch (IOException e)
         {
-            System.out.println("something wrong with IO operation,e" + e);
-
+            logger.error("method:preProcess():something wrong with IO operation,e" + e);
             return false;
         }
         finally
@@ -300,7 +312,7 @@ public class FtpBatchDownload
                 }
                 catch (IOException e)
                 {
-                    System.out.println("io close exception,e:" + e);
+                    logger.error("method:preProcess():io close exception,e:" + e);
                 }
             }
         }
@@ -330,7 +342,7 @@ public class FtpBatchDownload
         //当指定的文件在服务器上不存在时，终止下载操作
         if (!isRemoteDir(remoteDownloadFilePath))
         {
-            System.out.println("服务器上不存在该文件，停止下载");
+            logger.error("method: detailProcess():remote file not exist,stop to download");
 
             //关闭资源
             FtpUtil.closeResources(null, os, client);
@@ -342,7 +354,10 @@ public class FtpBatchDownload
             return result;
         }
 
-        System.out.println("用ftp下载开始");
+        if(logger.isDebugEnabled())
+        {
+            logger.debug("method: detailProcess(): start to download");
+        }
 
         //下载操作
         flag = client.retrieveFile(fileName, os);
@@ -354,7 +369,10 @@ public class FtpBatchDownload
             fails.put(remoteDownloadFilePath, localDownloadFilePath);
         }
 
-        System.out.println("用ftp下载" + (String.valueOf(flag).equals("true") ? "成功！" : "失败！"));
+        if(logger.isDebugEnabled())
+        {
+            logger.debug("method: detailProcess():download " + (String.valueOf(flag).equals("true") ? "success！" : "fail！"));
+        }
 
         return result;
     }
