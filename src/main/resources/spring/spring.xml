@@ -83,12 +83,30 @@
         <property name="cronExpression" value="${scan.cronExpression}" />
     </bean>
 
+    <!-- 先配置job3-->
+    <bean name="ftpUploadJobBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="ftpUpload"/>
+        <property name="targetMethod" value="upload"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+
+    <!--Quartz的定时任务3的触发器 -->
+    <bean id="ftpUploadTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="ftpUploadJobBean">
+        </property>
+        <property name="cronExpression" value="${upload.cronExpression}" />
+    </bean>
+
     <!-- 中心调度器-->
     <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" autowire="no">
         <property name="triggers">
             <list>
                 <!-- 执行定时下载服务器上文件-->
                 <ref bean="ftpDownloadTrigger" />
+
+                <!-- 执行定时上传到服务器-->
+                <ref bean="ftpUploadTrigger" />
 
                 <!-- 执行定时扫描服务器上的文件，一旦变动即可触发下载任务-->
                 <ref bean="scanDirectoryrigger" />

@@ -1,5 +1,7 @@
 package com.myproj.domain.init;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -11,6 +13,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class InitSpring
 {
     private static ApplicationContext context;
+
+    // 日志打印器
+    private static final Logger logger = LoggerFactory.getLogger("ORD_DEBUG");
 
     /**
      * spring容器初始化

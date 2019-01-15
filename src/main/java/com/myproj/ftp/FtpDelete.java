@@ -2,6 +2,9 @@ package com.myproj.ftp;
 
 import com.myproj.tools.FtpUtil;
 import org.apache.commons.net.ftp.FTPClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 
 /**
@@ -11,6 +14,8 @@ import java.io.IOException;
  */
 public class FtpDelete
 {
+    private static final Logger logger = LoggerFactory.getLogger(FtpDelete.class.getName());
+
     //指定删除服务器的路径
     private String remoteDeleteFilePath;
 
@@ -57,14 +62,13 @@ public class FtpDelete
             }
             else
             {
-                System.out.println("因该文件上级目录不存在，所以该文件不存在，无需删除");
+                logger.error("method:deleteProcess():file not exist,no need to delete");
                 return true;
             }
         }
         catch (IOException e)
         {
-            System.out.println("something wrong with changing directory by ftp：exception:"+e);
-
+            logger.error("method:deleteProcess():something wrong with changing directory by ftp：exception:" + e);
             return false;
         }
         finally
@@ -83,20 +87,24 @@ public class FtpDelete
     {
         int isExist = 0;
 
-        System.out.println("开始删除指定文件：指定文件路径："+ remoteDeleteFilePath +",文件名称："+fileName);
-
+        if(logger.isDebugEnabled())
+        {
+            logger.debug("method:deleteDetailProcess():file start to delete:remote path is :" + remoteDeleteFilePath + ",file name is:" + fileName);
+        }
 
         // 检验文件夹是否存在:通过删除该文件的方式来判定，如果返回码为250，则删除该文件成功，那么代表该文件夹存在,返回码为550，代表删除失败
         try
         {
             isExist = client.dele(fileName);
 
-            System.out.println("该文件在服务器中" +(isExist==250?"删除成功":"不存在")+",文件名称:" + fileName);
+            if(logger.isDebugEnabled())
+            {
+                logger.debug("method:deleteDetailProcess():file" + (isExist==250?"delete successfully":"not exist") + ",file name is :" + fileName);
+            }
         }
         catch (IOException e)
         {
-            System.out.println("failed to delete file by ftp ：remoteDeleteFilePath："+remoteDeleteFilePath+",exception:"+e);
-
+            logger.error("method:deleteDetailProcess():failed to delete file by ftp ：remoteDeleteFilePath："+remoteDeleteFilePath+",exception:"+e);
             isExist = 550;
         }
 
@@ -111,7 +119,7 @@ public class FtpDelete
     {
         if(null == remoteDeleteFilePath)
         {
-            System.out.println("remoteDeleteFilePath为空，删除操作停止");
+            logger.error("method :isNotNull(): remoteDeleteFilePath is null,stop to delete");
             return false;
         }
         return true;

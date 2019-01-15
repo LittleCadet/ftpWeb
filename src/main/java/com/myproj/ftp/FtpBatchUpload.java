@@ -3,6 +3,8 @@ package com.myproj.ftp;
 import com.myproj.tools.FtpUtil;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 import java.io.*;
@@ -15,6 +17,8 @@ import java.util.*;
  **/
 public class FtpBatchUpload
 {
+    private static final Logger logger = LoggerFactory.getLogger(FtpBatchUpload.class.getName());
+
     private FTPClient client = FtpUtil.init();
 
     //指定上传到服务器的路径
@@ -87,32 +91,57 @@ public class FtpBatchUpload
                     File[] files = file.listFiles();
                     for (File localFile : files)
                     {
-                        System.out.println("localUploadFilePath:" + localFile.toString() + "\n" + "remoteUploadFilePath:" + remoteUploadFilePath);
+                        if(logger.isDebugEnabled())
+                        {
+                            logger.debug("method:uploadFileToFtp():localUploadFilePath:" + localFile.toString() + "\n" + "remoteUploadFilePath:" + remoteUploadFilePath);
+                        }
                         //上传细节处理
                         result = uploadProcess(localFile.toString(), remoteUploadFilePath, result,is);
                     }
                 }
                 else
                 {
-                    System.out.println("localUploadFilePath:" + localUploadFilePath + "\n" + "remoteUploadFilePath:" + remoteUploadFilePath);
-
+                    if(logger.isDebugEnabled())
+                    {
+                        logger.debug("method:uploadFileToFtp():localUploadFilePath:" + localUploadFilePath + "\n" + "remoteUploadFilePath:" + remoteUploadFilePath);
+                    }
                     //上传细节处理
                     //如果localUploadFilePath是文件，则直接上传即可
                     result = uploadProcess(localUploadFilePath, remoteUploadFilePath, result,is);
                 }
 
             }
+
+            if (!CollectionUtils.isEmpty(fails))
+            {
+                logger.debug("method:uploadFileToFtp():****************failed to upload file path****************");
+                for (Map.Entry<String, String> fail : fails.entrySet())
+                {
+                    logger.error("localUploadFilePath:" + fail.getKey());
+                    logger.error("remoteUploadFilePath:" + fail.getValue());
+                }
+            }
+            else
+            {
+                if(logger.isDebugEnabled())
+                {
+                    logger.debug("method:uploadFileToFtp():--------------all files upload  success--------------");
+                }
+            }
+
+            if (result.contains(false))
+            {
+                return false;
+            }
         }
         catch (FileNotFoundException e)
         {
-            System.out.println("uploadFileToFtp:failed,localUploadFilePath:"+localUploadFilePath+",\nexception:"+e);
-
+            logger.error("method:uploadFileToFtp():uploadFileToFtp:failed,localUploadFilePath:"+localUploadFilePath+",\nexception:"+e);
             return false;
         }
         catch (IOException e)
         {
-            System.out.println("uploadFileToFtp:failed"+",\nexception:"+e);
-
+            logger.error("method:uploadFileToFtp():uploadFileToFtp:failed"+",\nexception:"+e);
             return false;
         }
         finally
@@ -121,24 +150,6 @@ public class FtpBatchUpload
             FtpUtil.closeResources(is,null,client);
         }
 
-        if (!CollectionUtils.isEmpty(fails))
-        {
-            System.out.println("****************上传失败的文件路径****************");
-            for (Map.Entry<String, String> fail : fails.entrySet())
-            {
-                System.out.println("localUploadFilePath:" + fail.getKey());
-                System.out.println("remoteUploadFilePath:" + fail.getValue());
-            }
-        }
-        else
-        {
-            System.out.println("--------------全部上传成功--------------");
-        }
-
-        if (result.contains(false))
-        {
-            return false;
-        }
         return true;
     }
 
@@ -159,21 +170,18 @@ public class FtpBatchUpload
             //如果文件不存在，则创建目录
             if (!client.changeWorkingDirectory(remoteUploadFilePath) )
             {
-                System.out.println("正在用ftp在服务器上创建目录：");
-
                 //在shell根目录下创建文件夹:注：一次只能创建一级目录，无法做到同时创建多及目录
                 flag = client.makeDirectory(packageName);
 
-                System.out.println("在服务器创建文件夹" +(flag.toString().equals("true") ?"成功":"失败")+",文件夹名称:" + packageName);
-            }
-            else
-            {
-                System.out.println("在服务器已存在该文件夹！");
+                if(logger.isDebugEnabled())
+                {
+                    logger.debug("method:mkDir():making directory" + (flag.toString().equals("true") ?"success":"fail")+",file name is :" + packageName);
+                }
             }
         }
         catch (IOException e)
         {
-            System.out.println("mkDir:fail,remoteUploadFilePath:"+remoteUploadFilePath+",\nexception:"+e);
+            logger.error("method:mkDir():fail,remoteUploadFilePath:"+remoteUploadFilePath+",\nexception:"+e);
         }
     }
 
@@ -211,8 +219,7 @@ public class FtpBatchUpload
                     }
                     else if(line.contains(SPLIT_BACKSLASH) || line.contains(SPLIT_FORWARD_SLASH))
                     {
-                        System.out.println("在ftpBatchUpload.txt文件中的数据有异常，请及时处理！");
-
+                        logger.error("method:processData():data not correct in ftpBatchUpload.txt,please handle it");
                         return false;
                     }
                 }
@@ -220,14 +227,12 @@ public class FtpBatchUpload
         }
         catch (FileNotFoundException e)
         {
-            System.out.println("processData failed in IO operation,e" + e);
-
+            logger.error("method:processData():processData failed in IO operation,e" + e);
             return false;
         }
         catch (IOException e)
         {
-            System.out.println("something wrong with IO operation,e" + e);
-
+            logger.error("method:processData():something wrong with IO operation,e" + e);
             return false;
         }
         finally
@@ -240,8 +245,7 @@ public class FtpBatchUpload
                 }
                 catch (IOException e)
                 {
-                    System.out.println("io close exception,e:" + e);
-
+                    logger.error("method:processData():io close exception,e:" + e);
                     return false;
                 }
             }
@@ -287,7 +291,10 @@ public class FtpBatchUpload
             remoteUploadFilePath + SPLIT_FORWARD_SLASH :
             remoteUploadFilePath) + fileName;
 
-        System.out.println("正在用ftp上传指定文件到服务器");
+        if(logger.isDebugEnabled())
+        {
+            logger.debug("method:uploadProcess():file is uploading to server");
+        }
 
         //用ftpClient上传到服务器
         flag = client.storeFile(remote, is);
@@ -299,7 +306,10 @@ public class FtpBatchUpload
 
         result.add(flag);
 
-        System.out.println("用ftp传输二进制文件" + (flag.toString().equals("true") ? "成功" : "失败"));
+        if(logger.isDebugEnabled())
+        {
+            logger.debug("method :uploadProcess():upload binary file " + (flag.toString().equals("true") ? "success" : "fail"));
+        }
         return result;
     }
 

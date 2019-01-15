@@ -3,6 +3,8 @@ package com.myproj.ftp;
 import com.myproj.tools.FtpUtil;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +19,8 @@ import java.util.Map;
  **/
 public class ScanDirectory
 {
+    private static final Logger logger = LoggerFactory.getLogger(ScanDirectory.class.getName());
+
     private FTPClient client = FtpUtil.init();
 
     //指定需要扫描的下载的服务器的路径
@@ -26,7 +30,7 @@ public class ScanDirectory
     private final String SPLIT_FORWARD_SLASH = "/";
 
     //计数：ftp下载动作一共执行多少次
-    private int count;
+    private Integer count = 0;
 
     //文件名+时间：用于缓存服务器上的对应的文件的时间
     private Map<String,String> cache = new HashMap<String,String>();
@@ -39,7 +43,10 @@ public class ScanDirectory
      */
     public boolean scan()
     {
-        System.out.println("扫描任务开始");
+        if(logger.isDebugEnabled())
+        {
+            logger.debug("method: scan():scan task is starting");
+        }
 
         if(isNotNull())
         {
@@ -69,7 +76,8 @@ public class ScanDirectory
             //判定目录是否存在
             if (!client.changeWorkingDirectory(remoteDir))
             {
-                System.out.println("服务器上不存在该目录，停止扫描");
+
+                logger.error("method : scanDetail()：file not exist in server,stop scan");
 
                 //关闭资源
                 FtpUtil.closeResources(null, null, client);
@@ -89,8 +97,7 @@ public class ScanDirectory
                     String[] temps = file.getRawListing().split(SPLIT_LINUX);
                     if(temps.length != 2)
                     {
-                        System.out.println("文件的创建时间截取后，数组长度不为2");
-
+                        logger.error("method : scanDetail()：the length of array is not 2");
                         return false;
                     }
                     else
@@ -106,7 +113,10 @@ public class ScanDirectory
                                 cache.put(file.getName(),time);
 
                                 //调用扫描任务时，执行下载动作（首次调用扫描任务时，也会执行下载动作）
-                                System.out.println("首次扫描任务调用下载任务："+(String.valueOf(FtpDownload.download()).equals("true")?"成功":"失败"));
+                                if(logger.isDebugEnabled())
+                                {
+                                    logger.debug("method : scanDetail()：firstTime ,download file by scan task:" + (String.valueOf(FtpDownload.download()).equals("true")?"success!":"fail!"));
+                                }
 
                                 return false;
                             }
@@ -121,8 +131,7 @@ public class ScanDirectory
         }
         catch (IOException e)
         {
-            System.out.println("something wrong in ftp operation ,exception:" + e);
-
+            logger.error("something wrong in ftp operation ,exception:" + e);
             return false;
         }
 
@@ -145,7 +154,7 @@ public class ScanDirectory
     {
         if(null == remoteDownloadFilePath)
         {
-            System.out.println("remoteDownloadFilePath为空，扫描操作停止");
+            logger.error("method: isNotNull():remoteDownloadFilePath is null, stop scan task");
             return false;
         }
         return true;
@@ -157,20 +166,26 @@ public class ScanDirectory
     public void scanProcess()
     {
         count ++;
-        System.out.println("------------执行扫描文件的次数：" + count + "------------------");
 
         //对比服务器的该文件的创建时间是否与缓存中的时间一致:不一致时，启动下载任务
         if(scanDetail())
         {
-            System.out.println("------------扫描的执行时间为：" + new Date() +"------------------");
-            System.out.println("------------扫描完成，扫描结果为服务器上的文件有更新，开始调用下载任务-------------");
-
-            System.out.println("扫描任务调用下载任务："+(String.valueOf(FtpDownload.download()).equals("true")?"成功":"失败"));
+            if(logger.isDebugEnabled())
+            {
+                logger.debug("method :scanProcess(): ------------scaning file time： " + count + " times------------------");
+                logger.debug("method :scanProcess(): ------------scaning file time" + new Date() + "------------------");
+                logger.debug("method :scanProcess(): ------------file was updated in server,start to download------------------");
+                logger.debug("method :scanProcess(): ------------download"+(String.valueOf(FtpDownload.download()).equals("true")?"success":"fail")+" by scan task------------------");
+            }
         }
         else
         {
-            System.out.println("------------扫描的执行时间为：" + new Date() +"------------------");
-            System.out.println("------------扫描完成，扫描结果为服务器上的文件没有更新，无需下载-------------");
+            if(logger.isDebugEnabled())
+            {
+                logger.debug("method :scanProcess(): ------------scaning file time： " + count + " times------------------");
+                logger.debug("method :scanProcess(): ------------scaning file time" + new Date() + "------------------");
+                logger.debug("method :scanProcess(): ------------file not update in server,no need to download------------------");
+            }
         }
 
         FtpUtil.closeResources(null,null,client);
