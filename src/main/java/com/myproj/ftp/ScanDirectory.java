@@ -45,7 +45,7 @@ public class ScanDirectory
     {
         if(logger.isDebugEnabled())
         {
-            logger.debug("method: scan():scan task is starting");
+            logger.debug("method: scan():scan task is starting，remoteDownloadFilePath：" + remoteDownloadFilePath);
         }
 
         if(isNotNull())

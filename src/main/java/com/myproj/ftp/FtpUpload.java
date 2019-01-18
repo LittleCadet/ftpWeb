@@ -42,7 +42,7 @@ public class FtpUpload
     {
         if(logger.isDebugEnabled())
         {
-            logger.debug("method: FtpUpload.upload() is entering");
+            logger.debug("method: FtpUpload.upload() is entering,localUploadFilePath:" + localUploadFilePath + ",remoteUploadFilePath:" +remoteUploadFilePath);
         }
         Boolean flag = false;
 

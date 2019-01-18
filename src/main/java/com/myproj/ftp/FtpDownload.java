@@ -73,6 +73,11 @@ public class FtpDownload
      */
     public static boolean downloadProcess()
     {
+        if(logger.isDebugEnabled())
+        {
+            logger.debug("method : downloadProcess(): localDownloadFilePath :" + localDownloadFilePath + ",remoteDownloadFilePath:" +remoteDownloadFilePath);
+        }
+
         Boolean flag = false;
 
         FileOutputStream os = null;
@@ -197,9 +202,9 @@ public class FtpDownload
             }
         }
 
-        if(!SPLIT_BACKSLASH.equals(localDownloadFilePath.substring(localDownloadFilePath.lastIndexOf(SPLIT_BACKSLASH))))
+        if(!SPLIT_FORWARD_SLASH.equals(localDownloadFilePath.substring(localDownloadFilePath.lastIndexOf(SPLIT_FORWARD_SLASH))))
         {
-            localDownloadFilePath = FtpDownload.localDownloadFilePath + SPLIT_BACKSLASH;
+            localDownloadFilePath = FtpDownload.localDownloadFilePath + SPLIT_FORWARD_SLASH;
         }
 
         //拼接本地路径，否则在创建输出流时，会报文件找不到异常
