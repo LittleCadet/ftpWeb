@@ -109,7 +109,7 @@ public class FtpUpload
 
             if(logger.isDebugEnabled())
             {
-                logger.debug("method:uploadFileToFtp(): binary file uploaded " + (flag.toString().equals("true") ?"成功":"失败"));
+                logger.debug("method:uploadFileToFtp(): binary file uploaded " + (flag.toString().equals("true") ?"success!":"fail!"));
             }
         }
         catch (FileNotFoundException e)
