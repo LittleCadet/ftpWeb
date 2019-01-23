@@ -1,11 +1,11 @@
 package com.myproj.domain;
 
 import com.myproj.domain.init.InitSpring;
-import com.myproj.ftp.FtpUpload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
+import javax.servlet.http.HttpServlet;
 import java.util.Date;
 
 /**
@@ -13,11 +13,12 @@ import java.util.Date;
  * 沈燮
  * 2019/1/3
  **/
-public class Ftp
+public class InitFtpServlet extends HttpServlet
 {
-    private static final Logger logger = LoggerFactory.getLogger(Ftp.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(InitFtpServlet.class.getName());
 
-    public static void main(String[] args)
+
+     public void init()
     {
         try
         {
@@ -35,7 +36,6 @@ public class Ftp
             {
                 logger.debug("--------------time:"+ new Date() +"--------------");
             }
-
             //第5秒有下载任务【download】，刚开始运行时有下载任务[scanDirectory]
             Thread.sleep(20000);
         }
