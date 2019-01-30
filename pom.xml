@@ -139,6 +139,17 @@
         </dependency>
     </dependencies>
 
+    <distributionManagement>
+        <repository>
+            <id>rdc-releases</id>
+            <url>https://repo.rdc.aliyun.com/repository/34802-release-augJR2/</url>
+        </repository>
+        <snapshotRepository>FtpBatchDelete
+            <id>rdc-snapshots</id>
+            <url>https://repo.rdc.aliyun.com/repository/34802-snapshot-aIMM7q/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <build>
         <finalName>ftpWeb</finalName>
         <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
@@ -161,7 +172,49 @@
                         <skip>true</skip>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>3.2.2</version>
+                    <configuration>
+                        <warName>ftpWeb</warName>
+                        <outputFileNameMapping>@{artifactId}@-@{baseVersion}@.@{extension}@</outputFileNameMapping>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>ftpWeb.war</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>war</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>3.1.0</version>
+                    <executions>  <!--执行器 mvn assembly:assembly -->
+                        <execution>
+                            <id>make-zip-kf</id><!--名字任意 -->
+                            <phase>package</phase><!-- 绑定到package生命周期阶段上 -->
+                            <goals>
+                                <goal>single</goal><!-- 只运行一次 -->
+                            </goals>
+                            <configuration>
+                                <finalName>ftpWeb</finalName>
+                                <appendAssemblyId>false</appendAssemblyId>
+                                <outputDirectory>./dist/kf</outputDirectory>
+                                <descriptors> <!--描述文件路径 -->
+                                    <descriptor>./zip-kf.xml</descriptor>
+                                </descriptors>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
+
+
 </project>
