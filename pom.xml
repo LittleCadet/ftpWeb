@@ -144,7 +144,7 @@
             <id>rdc-releases</id>
             <url>https://repo.rdc.aliyun.com/repository/34802-release-augJR2/</url>
         </repository>
-        <snapshotRepository>FtpBatchDelete
+        <snapshotRepository>
             <id>rdc-snapshots</id>
             <url>https://repo.rdc.aliyun.com/repository/34802-snapshot-aIMM7q/</url>
         </snapshotRepository>
