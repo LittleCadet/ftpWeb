@@ -178,6 +178,7 @@
                     <version>3.2.2</version>
                     <configuration>
                         <warName>ftpWeb</warName>
+                        <!-- 避免多次打包后出现包名带有时间戳的后缀-->
                         <outputFileNameMapping>@{artifactId}@-@{baseVersion}@.@{extension}@</outputFileNameMapping>
                     </configuration>
                     <executions>
@@ -187,28 +188,6 @@
                             <goals>
                                 <goal>war</goal>
                             </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-assembly-plugin</artifactId>
-                    <version>3.1.0</version>
-                    <executions>  <!--执行器 mvn assembly:assembly -->
-                        <execution>
-                            <id>make-zip-kf</id><!--名字任意 -->
-                            <phase>package</phase><!-- 绑定到package生命周期阶段上 -->
-                            <goals>
-                                <goal>single</goal><!-- 只运行一次 -->
-                            </goals>
-                            <configuration>
-                                <finalName>ftpWeb</finalName>
-                                <appendAssemblyId>false</appendAssemblyId>
-                                <outputDirectory>./dist/kf</outputDirectory>
-                                <descriptors> <!--描述文件路径 -->
-                                    <descriptor>./zip-kf.xml</descriptor>
-                                </descriptors>
-                            </configuration>
                         </execution>
                     </executions>
                 </plugin>
