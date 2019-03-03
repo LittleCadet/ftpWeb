@@ -31,16 +31,18 @@ public class FtpService
     //ftp会话超时时间
     private String timeOut;
 
+    private String userId;
+
     public FtpService()
     {
     }
 
-    public FtpService(@NotNull String host, @NotNull String account,
-        @NotNull String password)
+    public FtpService(String host, String account, String password, String userId)
     {
         this.host = host;
         this.account = account;
         this.password = password;
+        this.userId = userId;
     }
 
     public String getHost()
@@ -93,6 +95,16 @@ public class FtpService
         this.timeOut = timeOut;
     }
 
+    public String getUserId()
+    {
+        return userId;
+    }
+
+    public void setUserId(String userId)
+    {
+        this.userId = userId;
+    }
+
     @Override
     public String toString()
     {
@@ -102,6 +114,7 @@ public class FtpService
             ", password='" + password + '\'' +
             ", reTryTimes='" + reTryTimes + '\'' +
             ", timeOut='" + timeOut + '\'' +
+            ", userId='" + userId + '\'' +
             '}';
     }
 }

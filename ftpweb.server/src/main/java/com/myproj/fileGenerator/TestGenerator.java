@@ -19,7 +19,7 @@ public class TestGenerator
 		List<String> warnings = new ArrayList<String>();
 		try {
 			String configFilePath = System.getProperty("user.dir").concat(
-					"/src/resource/generatorConfig.xml");
+					"\\src\\main\\resources\\generatorConfig.xml");
 			System.out.println("加载配置文件===" + configFilePath);
 			boolean overwrite = true;
 			File configFile = new File(configFilePath);

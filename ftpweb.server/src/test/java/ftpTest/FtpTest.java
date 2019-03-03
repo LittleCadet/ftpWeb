@@ -1,5 +1,6 @@
 package ftpTest;
 
+import base.Base;
 import com.myproj.servlet.init.InitSpring;
 import com.myproj.ftp.*;
 import org.junit.Assert;
@@ -14,10 +15,8 @@ import java.util.Date;
  * @Author 沈燮
  * @Date 2018/12/27
  */
-public class FtpTest
+public class FtpTest extends Base
 {
-    private static ApplicationContext context = InitSpring.init();
-
     /**
      * 用ftp上传到服务器上指定文件到指定目录下
      */

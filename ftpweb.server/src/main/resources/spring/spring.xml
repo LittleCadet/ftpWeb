@@ -4,6 +4,8 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.springframework.org/schema/context
@@ -11,9 +13,31 @@
     http://www.springframework.org/schema/aop
     http://www.springframework.org/schema/aop/spring-aop.xsd
     http://www.springframework.org/schema/tx
-    http://www.springframework.org/schema/tx/spring-tx.xsd">
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
 
+    <!-- mvc注解驱动 -->
+    <mvc:annotation-driven />
+
+    <!-- 加载properties -->
     <context:property-placeholder location="classpath*:*.properties"/>
+
+
+    <!-- 扫描component -->
+    <context:component-scan base-package="com.myproj"/>
+
+    <!-- 引入数据源 -->
+    <bean id="datasource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+          p:driverClass="${jdbc.driver}" p:jdbcUrl="${jdbc.url}" p:user="${jdbc.username}"
+          p:password="${jdbc.password}"/>
+
+    <!-- 添加sqlSessionFactoryBean -->
+    <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean"
+          p:dataSource-ref="datasource"/>
+    <!-- 扫描dao，创建sqlsession对象，之后引入了Mapper.xml文件，并 调用其中的增删改查方法 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+          p:basePackage="com.myproj.dao" p:sqlSessionFactoryBeanName="sqlSessionFactoryBean"/>
 
     <bean id="ftpDelete" class="com.myproj.ftp.FtpDelete">
         <property name="remoteDeleteFilePath" value="${remoteDeleteFilePath}"/>
@@ -51,6 +75,16 @@
         <property name="password" value="${password}"/>
         <property name="timeOut" value="${timeOut}"/>
         <property name="reTryTimes" value="${reTryTimes}"/>
+    </bean>
+
+    <!--<bean id = "uploadMapper" class = "com.myproj.dao.UploadMapper"/>
+
+    <bean id = "userFtpMapper" class = "com.myproj.dao.UserFtpMapper"/>-->
+
+    <bean id = "uploadService" class = "com.myproj.serviceimpl.UploadServcieImpl">
+        <!--<property name="uploadMapper" ref="uploadMapper" />
+        <property name="userFtpMapper" ref = "userFtpMapper" />-->
+        <property name="ftpUpload" ref = "ftpUpload" />
     </bean>
 
 
@@ -103,13 +137,13 @@
         <property name="triggers">
             <list>
                 <!-- 执行定时下载服务器上文件-->
-                <ref bean="ftpDownloadTrigger" />
+                <!--<ref bean="ftpDownloadTrigger" />-->
 
                 <!-- 执行定时上传到服务器-->
-                <ref bean="ftpUploadTrigger" />
+                <!--<ref bean="ftpUploadTrigger" />-->
 
                 <!-- 执行定时扫描服务器上的文件，一旦变动即可触发下载任务-->
-                <ref bean="scanDirectoryrigger" />
+                <!--<ref bean="scanDirectoryrigger" />-->
             </list>
         </property>
     </bean>
