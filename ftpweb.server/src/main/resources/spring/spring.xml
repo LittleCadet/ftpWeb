@@ -87,6 +87,13 @@
         <property name="ftpUpload" ref = "ftpUpload" />
     </bean>
 
+    <bean id = "downloadService" class="com.myproj.serviceimpl.DownloadServiceImpl">
+        <property name="ftpDownload" ref="ftpDownload" />
+    </bean>
+
+    <bean id = "deleteService" class="com.myproj.serviceimpl.DeleteServiceImpl">
+        <property name="ftpDelete" ref = "ftpDelete" />
+    </bean>
 
     <!-- 先配置job1-->
     <bean name="ftpDownloadJobBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">

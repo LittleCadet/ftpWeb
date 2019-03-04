@@ -1,10 +1,9 @@
 package ftpTest;
 
 import base.Base;
-import com.myproj.entity.Download;
-import com.myproj.entity.FtpService;
-import com.myproj.entity.Upload;
+import com.myproj.entity.*;
 import com.myproj.ftp.FtpUpload;
+import com.myproj.service.DeleteService;
 import com.myproj.service.DownloadService;
 import com.myproj.service.UploadServcie;
 import org.junit.Assert;
@@ -56,5 +55,17 @@ public class FtpServiceTest extends Base
         download.setRemoteDownloadFilePath("D:\\test\\ftpTest2");
         //DownloadService downloadService = (DownloadService)context.getBean("downloadService");
         Assert.assertEquals(1,downloadService.insert(download));
+    }
+
+    @Test
+    public void delete()
+    {
+        Delete delete = new Delete();
+        delete.setAccount(account);
+        delete.setHost(host);
+        delete.setPassword(password);
+        delete.setRemoteDeleteFilePath("/usr/test/ftpTest/ftpTest.zip");
+        DeleteService deleteService = (DeleteService)context.getBean("deleteService");
+        Assert.assertEquals(1,deleteService.insert(delete));
     }
 }
