@@ -8,6 +8,7 @@ import com.myproj.entity.BatchDownload;
 import com.myproj.entity.UserFtp;
 import com.myproj.ftp.FtpBatchDownload;
 import com.myproj.service.BatchDownloadService;
+import com.myproj.tools.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class BatchDownloadServiceImpl implements BatchDownloadService
     private String serviceName = "batchDownload";
 
     @Override
-    public int insert(BatchDownload record)
+    public Integer insert(BatchDownload record)
     {
         if(logger.isDebugEnabled())
         {
@@ -59,17 +60,46 @@ public class BatchDownloadServiceImpl implements BatchDownloadService
 
         userFtpMapper.insert(userFtp);
 
+        //查出表userFtp当前主键的值，并入库
+        record.setCodeId(userFtpMapper.selectMaxCodeId());
+        record.setCreateTime(userFtp.getCreateTime());
+        record.setPassword(Base64.encode(record.getPassword().getBytes()));
+
         if(logger.isDebugEnabled())
         {
-            logger.debug("exit from BatchDownloadServiceImpl.insert();");
+            logger.debug("exit from BatchDownloadServiceImpl.insert();record :" + record);
         }
 
         return batchDownloadMapper.insert(record);
     }
 
     @Override
-    public int insertSelective(BatchDownload record)
+    public Integer insertSelective(BatchDownload record)
     {
         return batchDownloadMapper.insertSelective(record);
+    }
+
+    @Override
+    public BatchDownload selectByPrimaryKey(Integer id)
+    {
+        return batchDownloadMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public Integer updateByPrimaryKeySelective(BatchDownload record)
+    {
+        return batchDownloadMapper.updateByPrimaryKeySelective(record);
+    }
+
+    @Override
+    public Integer updateByPrimaryKey(BatchDownload record)
+    {
+        return batchDownloadMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public Integer deleteByPrimaryKey(Integer id)
+    {
+        return batchDownloadMapper.deleteByPrimaryKey(id);
     }
 }

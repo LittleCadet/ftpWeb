@@ -7,6 +7,7 @@ import com.myproj.dao.UserFtpMapper;
 import com.myproj.entity.ScheduleUpload;
 import com.myproj.entity.UserFtp;
 import com.myproj.service.ScheduleUploadService;
+import com.myproj.tools.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class ScheduleUploadServiceImpl implements ScheduleUploadService
     private String serviceName = "scheduleUpload";
 
     @Override
-    public int insert(ScheduleUpload record)
+    public Integer insert(ScheduleUpload record)
     {
         if (logger.isDebugEnabled())
         {
@@ -47,17 +48,46 @@ public class ScheduleUploadServiceImpl implements ScheduleUploadService
 
         userFtpMapper.insert(userFtp);
 
+        //查出表userFtp当前主键的值，并入库
+        record.setCodeId(userFtpMapper.selectMaxCodeId());
+        record.setCreateTime(userFtp.getCreateTime());
+        record.setPassword(Base64.encode(record.getPassword().getBytes()));
+
         if (logger.isDebugEnabled())
         {
-            logger.debug("exit from ScheduleUploadServiceImpl.insert();");
+            logger.debug("exit from ScheduleUploadServiceImpl.insert(); record :" + record);
         }
 
         return scheduleUploadMapper.insert(record);
     }
 
     @Override
-    public int insertSelective(ScheduleUpload record)
+    public Integer insertSelective(ScheduleUpload record)
     {
         return scheduleUploadMapper.insertSelective(record);
+    }
+
+    @Override
+    public ScheduleUpload selectByPrimaryKey(Integer id)
+    {
+        return scheduleUploadMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public Integer updateByPrimaryKeySelective(ScheduleUpload record)
+    {
+        return scheduleUploadMapper.updateByPrimaryKeySelective(record);
+    }
+
+    @Override
+    public Integer updateByPrimaryKey(ScheduleUpload record)
+    {
+        return scheduleUploadMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public Integer deleteByPrimaryKey(Integer id)
+    {
+        return scheduleUploadMapper.deleteByPrimaryKey(id);
     }
 }

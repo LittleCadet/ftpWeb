@@ -77,23 +77,13 @@
         <property name="reTryTimes" value="${reTryTimes}"/>
     </bean>
 
-    <!--<bean id = "uploadMapper" class = "com.myproj.dao.UploadMapper"/>
+    <bean id = "uploadService" class = "com.myproj.serviceimpl.UploadServcieImpl"/>
 
-    <bean id = "userFtpMapper" class = "com.myproj.dao.UserFtpMapper"/>-->
+    <bean id = "downloadService" class="com.myproj.serviceimpl.DownloadServiceImpl"/>
 
-    <bean id = "uploadService" class = "com.myproj.serviceimpl.UploadServcieImpl">
-        <!--<property name="uploadMapper" ref="uploadMapper" />
-        <property name="userFtpMapper" ref = "userFtpMapper" />-->
-        <property name="ftpUpload" ref = "ftpUpload" />
-    </bean>
+    <bean id = "deleteService" class="com.myproj.serviceimpl.DeleteServiceImpl"/>
 
-    <bean id = "downloadService" class="com.myproj.serviceimpl.DownloadServiceImpl">
-        <property name="ftpDownload" ref="ftpDownload" />
-    </bean>
-
-    <bean id = "deleteService" class="com.myproj.serviceimpl.DeleteServiceImpl">
-        <property name="ftpDelete" ref = "ftpDelete" />
-    </bean>
+    <bean id = "scanService" class="com.myproj.serviceimpl.ScanServiceImpl"/>
 
     <!-- 先配置job1-->
     <bean name="ftpDownloadJobBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -144,13 +134,13 @@
         <property name="triggers">
             <list>
                 <!-- 执行定时下载服务器上文件-->
-                <!--<ref bean="ftpDownloadTrigger" />-->
+                <ref bean="ftpDownloadTrigger" />
 
                 <!-- 执行定时上传到服务器-->
-                <!--<ref bean="ftpUploadTrigger" />-->
+                <ref bean="ftpUploadTrigger" />
 
                 <!-- 执行定时扫描服务器上的文件，一旦变动即可触发下载任务-->
-                <!--<ref bean="scanDirectoryrigger" />-->
+                <ref bean="scanDirectoryrigger" />
             </list>
         </property>
     </bean>

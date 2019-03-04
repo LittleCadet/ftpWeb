@@ -8,6 +8,7 @@ import com.myproj.entity.Upload;
 import com.myproj.entity.UserFtp;
 import com.myproj.ftp.FtpUpload;
 import com.myproj.service.UploadServcie;
+import com.myproj.tools.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +30,13 @@ public class UploadServcieImpl implements UploadServcie
     @Autowired
     private UserFtpMapper userFtpMapper;
 
-    //@Autowired
+    @Autowired
     private FtpUpload ftpUpload;
 
     private String serviceName = "upload";
 
     @Override
-    public int insert(Upload record)
+    public Integer insert(Upload record)
     {
         if (logger.isDebugEnabled())
         {
@@ -58,23 +59,49 @@ public class UploadServcieImpl implements UploadServcie
             logger.debug("request of userFtpMapper is :" + userFtp);
         }
 
+        //调用userFtpMapper接口入库
         userFtpMapper.insert(userFtp);
+
+        //查出表userFtp当前主键的值，并入库
+        record.setCodeId(userFtpMapper.selectMaxCodeId());
+        record.setCreateTime(userFtp.getCreateTime());
+        record.setPassword(Base64.encode(record.getPassword().getBytes()));
 
         if (logger.isDebugEnabled())
         {
-            logger.debug("exit from UploadServcieImpl.insert();");
+            logger.debug("exit from UploadServcieImpl.insert();record :" + record);
         }
         return uploadMapper.insert(record);
     }
 
     @Override
-    public int insertSelective(Upload record)
+    public Integer insertSelective(Upload record)
     {
         return uploadMapper.insertSelective(record);
     }
 
-    public void setFtpUpload(FtpUpload ftpUpload)
+    @Override
+    public Upload selectByPrimaryKey(Integer id)
     {
-        this.ftpUpload = ftpUpload;
+        return uploadMapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public Integer updateByPrimaryKeySelective(Upload record)
+    {
+        return uploadMapper.updateByPrimaryKeySelective(record);
+    }
+
+    @Override
+    public Integer updateByPrimaryKey(Upload record)
+    {
+        return uploadMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public Integer deleteByPrimaryKey(Integer id)
+    {
+        return uploadMapper.deleteByPrimaryKey(id);
+    }
+
 }

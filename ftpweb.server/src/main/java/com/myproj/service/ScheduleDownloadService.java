@@ -8,7 +8,15 @@ import com.myproj.entity.ScheduleDownload;
  */
 public interface ScheduleDownloadService
 {
-    int insert(ScheduleDownload record);
+    Integer deleteByPrimaryKey(Integer id);
 
-    int insertSelective(ScheduleDownload record);
+    Integer insert(ScheduleDownload record);
+
+    Integer insertSelective(ScheduleDownload record);
+
+    ScheduleDownload selectByPrimaryKey(Integer id);
+
+    Integer updateByPrimaryKeySelective(ScheduleDownload record);
+
+    Integer updateByPrimaryKey(ScheduleDownload record);
 }

@@ -1,63 +1,141 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.myproj.dao.BatchDeleteMapper">
-    <resultMap id="BaseResultMap" type="com.myproj.entity.BatchDelete">
-        <result column="host" property="host" jdbcType="VARCHAR"/>
-        <result column="account" property="account" jdbcType="VARCHAR"/>
-        <result column="password" property="password" jdbcType="VARCHAR"/>
-        <result column="reTryTimes" property="reTryTimes" jdbcType="VARCHAR"/>
-        <result column="timeOut" property="timeOut" jdbcType="VARCHAR"/>
-        <result column="batchDeleteFilePath" property="batchDeleteFilePath" jdbcType="VARCHAR"/>
-    </resultMap>
-    <insert id="insert" parameterType="com.myproj.entity.BatchDelete">
-        insert into batchdelete (host, account, password,
-        reTryTimes, timeOut, batchDeleteFilePath
-        )
-        values (#{host,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
-        #{reTryTimes,jdbcType=VARCHAR}, #{timeOut,jdbcType=VARCHAR}, #{batchDeleteFilePath,jdbcType=VARCHAR}
-        )
-    </insert>
-    <insert id="insertSelective" parameterType="com.myproj.entity.BatchDelete">
-        insert into batchdelete
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="host != null">
-                host,
-            </if>
-            <if test="account != null">
-                account,
-            </if>
-            <if test="password != null">
-                password,
-            </if>
-            <if test="reTryTimes != null">
-                reTryTimes,
-            </if>
-            <if test="timeOut != null">
-                timeOut,
-            </if>
-            <if test="batchDeleteFilePath != null">
-                batchDeleteFilePath,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="host != null">
-                #{host,jdbcType=VARCHAR},
-            </if>
-            <if test="account != null">
-                #{account,jdbcType=VARCHAR},
-            </if>
-            <if test="password != null">
-                #{password,jdbcType=VARCHAR},
-            </if>
-            <if test="reTryTimes != null">
-                #{reTryTimes,jdbcType=VARCHAR},
-            </if>
-            <if test="timeOut != null">
-                #{timeOut,jdbcType=VARCHAR},
-            </if>
-            <if test="batchDeleteFilePath != null">
-                #{batchDeleteFilePath,jdbcType=VARCHAR},
-            </if>
-        </trim>
-    </insert>
+<mapper namespace="com.myproj.dao.BatchDeleteMapper" >
+  <resultMap id="BaseResultMap" type="com.myproj.entity.BatchDelete" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="codeId" property="codeId" jdbcType="INTEGER" />
+    <result column="host" property="host" jdbcType="VARCHAR" />
+    <result column="account" property="account" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="reTryTimes" property="reTryTimes" jdbcType="VARCHAR" />
+    <result column="timeOut" property="timeOut" jdbcType="VARCHAR" />
+    <result column="batchDeleteFilePath" property="batchDeleteFilePath" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, codeId, host, account, password, reTryTimes, timeOut, batchDeleteFilePath, createTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from batchdelete
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from batchdelete
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.myproj.entity.BatchDelete" >
+    insert into batchdelete (id, codeId, host, 
+      account, password, reTryTimes, 
+      timeOut, batchDeleteFilePath, createTime
+      )
+    values (#{id,jdbcType=INTEGER}, #{codeId,jdbcType=INTEGER}, #{host,jdbcType=VARCHAR}, 
+      #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{reTryTimes,jdbcType=VARCHAR}, 
+      #{timeOut,jdbcType=VARCHAR}, #{batchDeleteFilePath,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.myproj.entity.BatchDelete" >
+    insert into batchdelete
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="codeId != null" >
+        codeId,
+      </if>
+      <if test="host != null" >
+        host,
+      </if>
+      <if test="account != null" >
+        account,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="reTryTimes != null" >
+        reTryTimes,
+      </if>
+      <if test="timeOut != null" >
+        timeOut,
+      </if>
+      <if test="batchDeleteFilePath != null" >
+        batchDeleteFilePath,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="codeId != null" >
+        #{codeId,jdbcType=INTEGER},
+      </if>
+      <if test="host != null" >
+        #{host,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null" >
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="reTryTimes != null" >
+        #{reTryTimes,jdbcType=VARCHAR},
+      </if>
+      <if test="timeOut != null" >
+        #{timeOut,jdbcType=VARCHAR},
+      </if>
+      <if test="batchDeleteFilePath != null" >
+        #{batchDeleteFilePath,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.myproj.entity.BatchDelete" >
+    update batchdelete
+    <set >
+      <if test="codeId != null" >
+        codeId = #{codeId,jdbcType=INTEGER},
+      </if>
+      <if test="host != null" >
+        host = #{host,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null" >
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="reTryTimes != null" >
+        reTryTimes = #{reTryTimes,jdbcType=VARCHAR},
+      </if>
+      <if test="timeOut != null" >
+        timeOut = #{timeOut,jdbcType=VARCHAR},
+      </if>
+      <if test="batchDeleteFilePath != null" >
+        batchDeleteFilePath = #{batchDeleteFilePath,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.myproj.entity.BatchDelete" >
+    update batchdelete
+    set codeId = #{codeId,jdbcType=INTEGER},
+      host = #{host,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      reTryTimes = #{reTryTimes,jdbcType=VARCHAR},
+      timeOut = #{timeOut,jdbcType=VARCHAR},
+      batchDeleteFilePath = #{batchDeleteFilePath,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
 </mapper>

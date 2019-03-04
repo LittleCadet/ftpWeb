@@ -11,7 +11,7 @@ import java.io.InputStream;
 
 /**
  * ftp的工具类
- * @Author 沈燮
+ * @Author LettleCadet
  * @Date 2018/12/27
  */
 public class FtpUtil

@@ -8,7 +8,15 @@ import com.myproj.entity.Delete;
  */
 public interface DeleteService
 {
-    int insert(Delete record);
+    Integer deleteByPrimaryKey(Integer id);
 
-    int insertSelective(Delete record);
+    Integer insert(Delete record);
+
+    Integer insertSelective(Delete record);
+
+    Delete selectByPrimaryKey(Integer id);
+
+    Integer updateByPrimaryKeySelective(Delete record);
+
+    Integer updateByPrimaryKey(Delete record);
 }

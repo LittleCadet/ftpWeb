@@ -8,7 +8,15 @@ import com.myproj.entity.ScheduleUpload;
  */
 public interface ScheduleUploadService
 {
-    int insert(ScheduleUpload record);
+    Integer deleteByPrimaryKey(Integer id);
 
-    int insertSelective(ScheduleUpload record);
+    Integer insert(ScheduleUpload record);
+
+    Integer insertSelective(ScheduleUpload record);
+
+    ScheduleUpload selectByPrimaryKey(Integer id);
+
+    Integer updateByPrimaryKeySelective(ScheduleUpload record);
+
+    Integer updateByPrimaryKey(ScheduleUpload record);
 }

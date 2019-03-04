@@ -2,9 +2,16 @@ package com.myproj.dao;
 
 import com.myproj.entity.Scan;
 
-public interface ScanMapper
-{
-    int insert(Scan record);
+public interface ScanMapper {
+    Integer deleteByPrimaryKey(Integer id);
 
-    int insertSelective(Scan record);
+    Integer insert(Scan record);
+
+    Integer insertSelective(Scan record);
+
+    Scan selectByPrimaryKey(Integer id);
+
+    Integer updateByPrimaryKeySelective(Scan record);
+
+    Integer updateByPrimaryKey(Scan record);
 }

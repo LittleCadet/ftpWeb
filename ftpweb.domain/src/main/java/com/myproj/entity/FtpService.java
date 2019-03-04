@@ -2,13 +2,12 @@ package com.myproj.entity;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
-
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.sql.Timestamp;
 
 /**
  * @Author LettleCadet
- * @Date 2019/2/26
+ * @Timestamp 2019/2/26
  */
 public class FtpService
 {
@@ -32,6 +31,12 @@ public class FtpService
     private String timeOut;
 
     private String userId;
+
+    private Timestamp createTime;
+
+    private Integer codeId;
+
+    private Integer id;
 
     public FtpService()
     {
@@ -105,6 +110,36 @@ public class FtpService
         this.userId = userId;
     }
 
+    public Timestamp getCreateTime()
+    {
+        return createTime;
+    }
+
+    public void setCreateTime(Timestamp createTime)
+    {
+        this.createTime = createTime;
+    }
+
+    public Integer getCodeId()
+    {
+        return codeId;
+    }
+
+    public void setCodeId(Integer codeId)
+    {
+        this.codeId = codeId;
+    }
+
+    public Integer getId()
+    {
+        return id;
+    }
+
+    public void setId(Integer id)
+    {
+        this.id = id;
+    }
+
     @Override
     public String toString()
     {
@@ -115,6 +150,9 @@ public class FtpService
             ", reTryTimes='" + reTryTimes + '\'' +
             ", timeOut='" + timeOut + '\'' +
             ", userId='" + userId + '\'' +
+            ", createTime=" + createTime +
+            ", codeId=" + codeId +
+            ", id=" + id +
             '}';
     }
 }

@@ -8,7 +8,15 @@ import com.myproj.entity.BatchDelete;
  */
 public interface BatchDeleteService
 {
-    int insert(BatchDelete record);
+    Integer deleteByPrimaryKey(Integer id);
 
-    int insertSelective(BatchDelete record);
+    Integer insert(BatchDelete record);
+
+    Integer insertSelective(BatchDelete record);
+
+    BatchDelete selectByPrimaryKey(Integer id);
+
+    Integer updateByPrimaryKeySelective(BatchDelete record);
+
+    Integer updateByPrimaryKey(BatchDelete record);
 }

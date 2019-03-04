@@ -8,6 +8,7 @@ import com.myproj.entity.Scan;
 import com.myproj.entity.UserFtp;
 import com.myproj.ftp.ScanDirectory;
 import com.myproj.service.ScanService;
+import com.myproj.tools.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class ScanServiceImpl implements ScanService
     private String serviceName = "scan";
 
     @Override
-    public int insert(Scan record)
+    public Integer insert(Scan record)
     {
         if (logger.isDebugEnabled())
         {
@@ -59,16 +60,45 @@ public class ScanServiceImpl implements ScanService
 
         userFtpMapper.insert(userFtp);
 
+        //查出表userFtp当前主键的值，并入库
+        record.setCodeId(userFtpMapper.selectMaxCodeId());
+        record.setCreateTime(userFtp.getCreateTime());
+        record.setPassword(Base64.encode(record.getPassword().getBytes()));
+
         if (logger.isDebugEnabled())
         {
-            logger.debug("exit from ScanServiceImpl.insert();");
+            logger.debug("exit from ScanServiceImpl.insert();record:" + record);
         }
         return scanMapper.insert(record);
     }
 
     @Override
-    public int insertSelective(Scan record)
+    public Integer insertSelective(Scan record)
     {
         return scanMapper.insertSelective(record);
+    }
+
+    @Override
+    public Scan selectByPrimaryKey(Integer id)
+    {
+        return scanMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public Integer updateByPrimaryKeySelective(Scan record)
+    {
+        return scanMapper.updateByPrimaryKeySelective(record);
+    }
+
+    @Override
+    public Integer updateByPrimaryKey(Scan record)
+    {
+        return scanMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public Integer deleteByPrimaryKey(Integer id)
+    {
+        return scanMapper.deleteByPrimaryKey(id);
     }
 }

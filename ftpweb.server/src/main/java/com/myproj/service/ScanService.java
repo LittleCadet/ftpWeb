@@ -8,7 +8,15 @@ import com.myproj.entity.Scan;
  */
 public interface ScanService
 {
-    int insert(Scan record);
+    Integer deleteByPrimaryKey(Integer id);
 
-    int insertSelective(Scan record);
+    Integer insert(Scan record);
+
+    Integer insertSelective(Scan record);
+
+    Scan selectByPrimaryKey(Integer id);
+
+    Integer updateByPrimaryKeySelective(Scan record);
+
+    Integer updateByPrimaryKey(Scan record);
 }

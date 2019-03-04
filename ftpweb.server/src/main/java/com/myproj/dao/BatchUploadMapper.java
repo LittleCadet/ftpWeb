@@ -3,7 +3,15 @@ package com.myproj.dao;
 import com.myproj.entity.BatchUpload;
 
 public interface BatchUploadMapper {
-    int insert(BatchUpload record);
+    Integer deleteByPrimaryKey(Integer id);
 
-    int insertSelective(BatchUpload record);
+    Integer insert(BatchUpload record);
+
+    Integer insertSelective(BatchUpload record);
+
+    BatchUpload selectByPrimaryKey(Integer id);
+
+    Integer updateByPrimaryKeySelective(BatchUpload record);
+
+    Integer updateByPrimaryKey(BatchUpload record);
 }

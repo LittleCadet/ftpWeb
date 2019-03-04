@@ -2,9 +2,16 @@ package com.myproj.dao;
 
 import com.myproj.entity.Delete;
 
-public interface DeleteMapper
-{
-    int insert(Delete record);
+public interface DeleteMapper {
+    Integer deleteByPrimaryKey(Integer id);
 
-    int insertSelective(Delete record);
+    Integer insert(Delete record);
+
+    Integer insertSelective(Delete record);
+
+    Delete selectByPrimaryKey(Integer id);
+
+    Integer updateByPrimaryKeySelective(Delete record);
+
+    Integer updateByPrimaryKey(Delete record);
 }

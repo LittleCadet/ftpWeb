@@ -3,15 +3,17 @@ package com.myproj.dao;
 import com.myproj.entity.UserFtp;
 
 public interface UserFtpMapper {
-    int deleteByPrimaryKey(Integer codeId);
+    Integer deleteByPrimaryKey(Integer codeId);
 
-    int insert(UserFtp record);
+    Integer insert(UserFtp record);
 
-    int insertSelective(UserFtp record);
+    Integer insertSelective(UserFtp record);
 
     UserFtp selectByPrimaryKey(Integer codeId);
 
-    int updateByPrimaryKeySelective(UserFtp record);
+    Integer updateByPrimaryKeySelective(UserFtp record);
 
-    int updateByPrimaryKey(UserFtp record);
+    Integer updateByPrimaryKey(UserFtp record);
+
+    Integer selectMaxCodeId();
 }

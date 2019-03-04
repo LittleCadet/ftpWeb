@@ -8,6 +8,7 @@ import com.myproj.entity.Download;
 import com.myproj.entity.UserFtp;
 import com.myproj.ftp.FtpDownload;
 import com.myproj.service.DownloadService;
+import com.myproj.tools.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class DownloadServiceImpl implements DownloadService
     private String serviceName = "download";
 
     @Override
-    public int insert(Download record)
+    public Integer insert(Download record)
     {
         if (logger.isDebugEnabled())
         {
@@ -60,16 +61,45 @@ public class DownloadServiceImpl implements DownloadService
 
         userFtpMapper.insert(userFtp);
 
+        //查出表userFtp当前主键的值，并入库
+        record.setCodeId(userFtpMapper.selectMaxCodeId());
+        record.setCreateTime(userFtp.getCreateTime());
+        record.setPassword(Base64.encode(record.getPassword().getBytes()));
+
         if (logger.isDebugEnabled())
         {
-            logger.debug("exit from DownloadServiceImpl.insert();");
+            logger.debug("exit from DownloadServiceImpl.insert();record :" + record);
         }
         return downloadMapper.insert(record);
     }
 
     @Override
-    public int insertSelective(Download record)
+    public Integer insertSelective(Download record)
     {
         return downloadMapper.insertSelective(record);
+    }
+
+    @Override
+    public Download selectByPrimaryKey(Integer id)
+    {
+        return downloadMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public Integer updateByPrimaryKeySelective(Download record)
+    {
+        return downloadMapper.updateByPrimaryKeySelective(record);
+    }
+
+    @Override
+    public Integer updateByPrimaryKey(Download record)
+    {
+        return downloadMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public Integer deleteByPrimaryKey(Integer id)
+    {
+        return downloadMapper.deleteByPrimaryKey(id);
     }
 }

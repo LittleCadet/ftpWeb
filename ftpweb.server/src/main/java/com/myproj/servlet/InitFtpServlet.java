@@ -10,7 +10,7 @@ import java.util.Date;
 
 /**
  * 让tomcat 调用
- * 沈燮
+ * LettleCadet
  * 2019/1/3
  **/
 public class InitFtpServlet extends HttpServlet

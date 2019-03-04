@@ -14,7 +14,7 @@ import java.util.Map;
 
 /**
  * 用于扫描的服务器上的文件的创建时间和缓存中的时间进行比对，不一致时，触发下载任务
- * 沈燮
+ * LettleCadet
  * 2018/12/29
  **/
 public class ScanDirectory

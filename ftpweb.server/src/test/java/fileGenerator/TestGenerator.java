@@ -1,4 +1,4 @@
-package com.myproj.fileGenerator;
+package fileGenerator;
 
 import org.junit.Test;
 import org.mybatis.generator.api.MyBatisGenerator;

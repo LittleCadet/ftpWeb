@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * ftp功能测试类
  *
- * @Author 沈燮
+ * @Author LettleCadet
  * @Date 2018/12/27
  */
 public class FtpTest extends Base

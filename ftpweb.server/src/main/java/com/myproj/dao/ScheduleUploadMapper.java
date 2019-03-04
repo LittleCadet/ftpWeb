@@ -2,9 +2,16 @@ package com.myproj.dao;
 
 import com.myproj.entity.ScheduleUpload;
 
-public interface ScheduleUploadMapper
-{
-    int insert(ScheduleUpload record);
+public interface ScheduleUploadMapper {
+    Integer deleteByPrimaryKey(Integer id);
 
-    int insertSelective(ScheduleUpload record);
+    Integer insert(ScheduleUpload record);
+
+    Integer insertSelective(ScheduleUpload record);
+
+    ScheduleUpload selectByPrimaryKey(Integer id);
+
+    Integer updateByPrimaryKeySelective(ScheduleUpload record);
+
+    Integer updateByPrimaryKey(ScheduleUpload record);
 }

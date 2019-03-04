@@ -2,9 +2,16 @@ package com.myproj.dao;
 
 import com.myproj.entity.ScheduleDownload;
 
-public interface ScheduleDownloadMapper
-{
-    int insert(ScheduleDownload record);
+public interface ScheduleDownloadMapper {
+    Integer deleteByPrimaryKey(Integer id);
 
-    int insertSelective(ScheduleDownload record);
+    Integer insert(ScheduleDownload record);
+
+    Integer insertSelective(ScheduleDownload record);
+
+    ScheduleDownload selectByPrimaryKey(Integer id);
+
+    Integer updateByPrimaryKeySelective(ScheduleDownload record);
+
+    Integer updateByPrimaryKey(ScheduleDownload record);
 }

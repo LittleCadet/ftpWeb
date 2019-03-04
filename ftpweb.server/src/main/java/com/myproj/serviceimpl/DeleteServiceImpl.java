@@ -8,6 +8,7 @@ import com.myproj.entity.Delete;
 import com.myproj.entity.UserFtp;
 import com.myproj.ftp.FtpDelete;
 import com.myproj.service.DeleteService;
+import com.myproj.tools.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class DeleteServiceImpl implements DeleteService
     private String serviceName = "delete";
 
     @Override
-    public int insert(Delete record)
+    public Integer insert(Delete record)
     {
         if (logger.isDebugEnabled())
         {
@@ -59,16 +60,45 @@ public class DeleteServiceImpl implements DeleteService
 
         userFtpMapper.insert(userFtp);
 
+        //查出表userFtp当前主键的值，并入库
+        record.setCodeId(userFtpMapper.selectMaxCodeId());
+        record.setCreateTime(userFtp.getCreateTime());
+        record.setPassword(Base64.encode(record.getPassword().getBytes()));
+
         if (logger.isDebugEnabled())
         {
-            logger.debug("exit from DeleteServiceImpl.insert();");
+            logger.debug("exit from DeleteServiceImpl.insert(); record :" + record);
         }
         return deleteMapper.insert(record);
     }
 
     @Override
-    public int insertSelective(Delete record)
+    public Integer insertSelective(Delete record)
     {
         return deleteMapper.insertSelective(record);
+    }
+
+    @Override
+    public Delete selectByPrimaryKey(Integer id)
+    {
+        return deleteMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public Integer updateByPrimaryKeySelective(Delete record)
+    {
+        return deleteMapper.updateByPrimaryKeySelective(record);
+    }
+
+    @Override
+    public Integer updateByPrimaryKey(Delete record)
+    {
+        return deleteMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public Integer deleteByPrimaryKey(Integer id)
+    {
+        return deleteMapper.deleteByPrimaryKey(id);
     }
 }

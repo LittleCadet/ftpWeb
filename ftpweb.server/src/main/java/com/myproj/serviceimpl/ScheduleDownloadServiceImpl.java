@@ -7,6 +7,7 @@ import com.myproj.dao.UserFtpMapper;
 import com.myproj.entity.ScheduleDownload;
 import com.myproj.entity.UserFtp;
 import com.myproj.service.ScheduleDownloadService;
+import com.myproj.tools.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class ScheduleDownloadServiceImpl implements ScheduleDownloadService
     private String serviceName = "scheduleDownload";
 
     @Override
-    public int insert(ScheduleDownload record)
+    public Integer insert(ScheduleDownload record)
     {
         if (logger.isDebugEnabled())
         {
@@ -47,17 +48,46 @@ public class ScheduleDownloadServiceImpl implements ScheduleDownloadService
 
         userFtpMapper.insert(userFtp);
 
+        //查出表userFtp当前主键的值，并入库
+        record.setCodeId(userFtpMapper.selectMaxCodeId());
+        record.setCreateTime(userFtp.getCreateTime());
+        record.setPassword(Base64.encode(record.getPassword().getBytes()));
+
         if (logger.isDebugEnabled())
         {
-            logger.debug("exit from ScheduleDownloadServiceImpl.insert();");
+            logger.debug("exit from ScheduleDownloadServiceImpl.insert(); record :" + record);
         }
 
         return scheduleDownloadMapper.insert(record);
     }
 
     @Override
-    public int insertSelective(ScheduleDownload record)
+    public Integer insertSelective(ScheduleDownload record)
     {
         return scheduleDownloadMapper.insertSelective(record);
+    }
+
+    @Override
+    public ScheduleDownload selectByPrimaryKey(Integer id)
+    {
+        return scheduleDownloadMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public Integer updateByPrimaryKeySelective(ScheduleDownload record)
+    {
+        return scheduleDownloadMapper.updateByPrimaryKeySelective(record);
+    }
+
+    @Override
+    public Integer updateByPrimaryKey(ScheduleDownload record)
+    {
+        return scheduleDownloadMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public Integer deleteByPrimaryKey(Integer id)
+    {
+        return scheduleDownloadMapper.deleteByPrimaryKey(id);
     }
 }

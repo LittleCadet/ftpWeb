@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * 批量删除：支持删除服务器上不同目录下的文件
- * 沈燮
+ * LettleCadet
  * 2019/1/3
  **/
 public class FtpBatchDelete

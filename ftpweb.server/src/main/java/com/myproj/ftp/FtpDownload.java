@@ -13,7 +13,7 @@ import java.util.Date;
 
 /**
  * ftp的下载操作
- * @Author 沈燮
+ * @Author LettleCadet
  * @Date 2018/12/27
  */
 public class FtpDownload

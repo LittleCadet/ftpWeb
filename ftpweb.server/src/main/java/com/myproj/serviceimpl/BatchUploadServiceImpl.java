@@ -8,6 +8,7 @@ import com.myproj.entity.BatchUpload;
 import com.myproj.entity.UserFtp;
 import com.myproj.ftp.FtpBatchUpload;
 import com.myproj.service.BatchUploadService;
+import com.myproj.tools.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class BatchUploadServiceImpl implements BatchUploadService
     private String serviceName = "batchUpload";
 
     @Override
-    public int insert(BatchUpload record)
+    public Integer insert(BatchUpload record)
     {
         if (logger.isDebugEnabled())
     {
@@ -60,17 +61,46 @@ public class BatchUploadServiceImpl implements BatchUploadService
 
         userFtpMapper.insert(userFtp);
 
+        //查出表userFtp当前主键的值，并入库
+        record.setCodeId(userFtpMapper.selectMaxCodeId());
+        record.setCreateTime(userFtp.getCreateTime());
+        record.setPassword(Base64.encode(record.getPassword().getBytes()));
+
         if (logger.isDebugEnabled())
         {
-            logger.debug("exit from BatchUploadServiceImpl.insert();");
+            logger.debug("exit from BatchUploadServiceImpl.insert();record :" + record);
         }
 
         return batchUploadMapper.insert(record);
     }
 
     @Override
-    public int insertSelective(BatchUpload record)
+    public Integer insertSelective(BatchUpload record)
     {
         return batchUploadMapper.insertSelective(record);
+    }
+
+    @Override
+    public BatchUpload selectByPrimaryKey(Integer id)
+    {
+        return batchUploadMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public Integer updateByPrimaryKeySelective(BatchUpload record)
+    {
+        return batchUploadMapper.updateByPrimaryKeySelective(record);
+    }
+
+    @Override
+    public Integer updateByPrimaryKey(BatchUpload record)
+    {
+        return batchUploadMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public Integer deleteByPrimaryKey(Integer id)
+    {
+        return batchUploadMapper.deleteByPrimaryKey(id);
     }
 }

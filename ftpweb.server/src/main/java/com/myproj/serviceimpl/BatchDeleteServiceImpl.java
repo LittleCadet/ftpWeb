@@ -8,6 +8,7 @@ import com.myproj.entity.BatchDelete;
 import com.myproj.entity.UserFtp;
 import com.myproj.ftp.FtpBatchDelete;
 import com.myproj.service.BatchDeleteService;
+import com.myproj.tools.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class BatchDeleteServiceImpl implements BatchDeleteService
     private String serviceName = "batchDelete";
 
     @Override
-    public int insert(BatchDelete record)
+    public Integer insert(BatchDelete record)
     {
         if(logger.isDebugEnabled())
         {
@@ -64,16 +65,45 @@ public class BatchDeleteServiceImpl implements BatchDeleteService
 
         userFtpMapper.insert(userFtp);
 
+        //查出表userFtp当前主键的值，并入库
+        record.setCodeId(userFtpMapper.selectMaxCodeId());
+        record.setCreateTime(userFtp.getCreateTime());
+        record.setPassword(Base64.encode(record.getPassword().getBytes()));
+
         if(logger.isDebugEnabled())
         {
-            logger.debug("exit from BatchDeleteServiceImpl.insert()");
+            logger.debug("exit from BatchDeleteServiceImpl.insert(),record :" + record);
         }
         return batchDeleteMapper.insert(record);
     }
 
     @Override
-    public int insertSelective(BatchDelete record)
+    public Integer insertSelective(BatchDelete record)
     {
         return batchDeleteMapper.insert(record);
+    }
+
+    @Override
+    public BatchDelete selectByPrimaryKey(Integer id)
+    {
+        return batchDeleteMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public Integer updateByPrimaryKeySelective(BatchDelete record)
+    {
+        return batchDeleteMapper.updateByPrimaryKeySelective(record);
+    }
+
+    @Override
+    public Integer updateByPrimaryKey(BatchDelete record)
+    {
+        return batchDeleteMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public Integer deleteByPrimaryKey(Integer id)
+    {
+        return batchDeleteMapper.deleteByPrimaryKey(id);
     }
 }
