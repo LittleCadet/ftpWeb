@@ -8,7 +8,7 @@ import com.myproj.entity.BatchDownload;
 import com.myproj.entity.UserFtp;
 import com.myproj.ftp.FtpBatchDownload;
 import com.myproj.service.BatchDownloadService;
-import com.myproj.tools.Base64;
+import com.myproj.tools.Base64Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +63,7 @@ public class BatchDownloadServiceImpl implements BatchDownloadService
         //查出表userFtp当前主键的值，并入库
         record.setCodeId(userFtpMapper.selectMaxCodeId());
         record.setCreateTime(userFtp.getCreateTime());
-        record.setPassword(Base64.encode(record.getPassword().getBytes()));
+        record.setPassword(Base64Util.encode(record.getPassword().getBytes()));
 
         if(logger.isDebugEnabled())
         {

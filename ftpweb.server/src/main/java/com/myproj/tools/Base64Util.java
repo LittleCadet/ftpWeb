@@ -10,7 +10,7 @@ import static org.apache.commons.net.util.Base64.encodeBase64;;
  * LettleCadet
  * 2019/3/4
  **/
-public class Base64
+public class Base64Util
 {
     /**
      * Base64加密

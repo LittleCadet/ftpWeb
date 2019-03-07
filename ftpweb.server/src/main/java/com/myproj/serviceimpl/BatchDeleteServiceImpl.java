@@ -8,7 +8,7 @@ import com.myproj.entity.BatchDelete;
 import com.myproj.entity.UserFtp;
 import com.myproj.ftp.FtpBatchDelete;
 import com.myproj.service.BatchDeleteService;
-import com.myproj.tools.Base64;
+import com.myproj.tools.Base64Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +68,7 @@ public class BatchDeleteServiceImpl implements BatchDeleteService
         //查出表userFtp当前主键的值，并入库
         record.setCodeId(userFtpMapper.selectMaxCodeId());
         record.setCreateTime(userFtp.getCreateTime());
-        record.setPassword(Base64.encode(record.getPassword().getBytes()));
+        record.setPassword(Base64Util.encode(record.getPassword().getBytes()));
 
         if(logger.isDebugEnabled())
         {

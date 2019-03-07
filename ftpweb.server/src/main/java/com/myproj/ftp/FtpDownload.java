@@ -20,28 +20,28 @@ public class FtpDownload
 {
     private static final Logger logger = LoggerFactory.getLogger(FtpDownload.class.getName());
 
-    private static FTPClient client = FtpUtil.init();
+    private FTPClient client = FtpUtil.init();
 
     //指定下载的服务器的路径
-    private static String remoteDownloadFilePath;
+    private String remoteDownloadFilePath;
 
     //指定需要下载到本地文件路径
-    private static String localDownloadFilePath;
+    private String localDownloadFilePath;
 
     //分隔符‘\’
-    private static final String SPLIT_BACKSLASH = "\\";
+    private final String SPLIT_BACKSLASH = "\\";
 
     //分隔符“/”
-    private static final String SPLIT_FORWARD_SLASH = "/";
+    private final String SPLIT_FORWARD_SLASH = "/";
 
     //计数：ftp下载动作一共执行多少次
-    private static Integer count = 0;
+    private Integer count = 0;
 
     /**
      * 下载文件
      * @return 判定是否下载完成
      */
-    public static boolean download()
+    public boolean download()
     {
         boolean flag = false;
 
@@ -71,7 +71,7 @@ public class FtpDownload
      * 下载的具体操作
      * @return  判定是否下载完成
      */
-    public static boolean downloadProcess()
+    public boolean downloadProcess()
     {
         if(logger.isDebugEnabled())
         {
@@ -143,7 +143,7 @@ public class FtpDownload
      * 判定服务器的文件是否是否存在
      * @return 判定服务器的文件是否是否存在
      */
-    public static boolean isRemoteDir()
+    public boolean isRemoteDir()
     {
         int remoteIndex = remoteDownloadFilePath.lastIndexOf(SPLIT_FORWARD_SLASH);
         String remoteDir = remoteDownloadFilePath.substring(0,remoteIndex);
@@ -186,13 +186,13 @@ public class FtpDownload
      * 判定本地目录是否存在
      * @return 判定本地目录是否存在
      */
-    public static String isLocalDir()
+    public String isLocalDir()
     {
         File localFile = new File(localDownloadFilePath);
 
         File remoteFile = new File(remoteDownloadFilePath);
 
-        String localDownloadFilePath = FtpDownload.localDownloadFilePath;
+        String localDownloadFilePath = this.localDownloadFilePath;
 
         if (!localFile.exists())
         {
@@ -204,7 +204,7 @@ public class FtpDownload
 
         if(!SPLIT_FORWARD_SLASH.equals(localDownloadFilePath.substring(localDownloadFilePath.lastIndexOf(SPLIT_BACKSLASH))))
         {
-            localDownloadFilePath = FtpDownload.localDownloadFilePath + SPLIT_FORWARD_SLASH;
+            localDownloadFilePath = this.localDownloadFilePath + SPLIT_FORWARD_SLASH;
         }
 
         //拼接本地路径，否则在创建输出流时，会报文件找不到异常
@@ -217,7 +217,7 @@ public class FtpDownload
      * 对remoteDownloadFilePath，localDownloadFilePath判空
      * @return 都不为空时，返回true
      */
-    public static boolean isNotNull()
+    public boolean isNotNull()
     {
         if(null == remoteDownloadFilePath)
         {

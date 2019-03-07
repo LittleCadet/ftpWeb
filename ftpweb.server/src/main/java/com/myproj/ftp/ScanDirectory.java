@@ -5,6 +5,7 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +23,9 @@ public class ScanDirectory
     private static final Logger logger = LoggerFactory.getLogger(ScanDirectory.class.getName());
 
     private FTPClient client = FtpUtil.init();
+
+    @Autowired
+    private FtpDownload ftpDownload;
 
     //指定需要扫描的下载的服务器的路径
     private String remoteDownloadFilePath;
@@ -115,7 +119,7 @@ public class ScanDirectory
                                 //调用扫描任务时，执行下载动作（首次调用扫描任务时，也会执行下载动作）
                                 if(logger.isDebugEnabled())
                                 {
-                                    logger.debug("method : scanDetail()：firstTime ,download file by scan task:" + (String.valueOf(FtpDownload.download()).equals("true")?"success!":"fail!"));
+                                    logger.debug("method : scanDetail()：firstTime ,download file by scan task:" + (String.valueOf(ftpDownload.download()).equals("true")?"success!":"fail!"));
                                 }
 
                                 return false;
@@ -175,7 +179,7 @@ public class ScanDirectory
                 logger.debug("method :scanProcess(): ------------scaning file time： " + count + " times------------------");
                 logger.debug("method :scanProcess(): ------------scaning file time" + new Date() + "------------------");
                 logger.debug("method :scanProcess(): ------------file was updated in server,start to download------------------");
-                logger.debug("method :scanProcess(): ------------download"+(String.valueOf(FtpDownload.download()).equals("true")?"success":"fail")+" by scan task------------------");
+                logger.debug("method :scanProcess(): ------------download"+(String.valueOf(ftpDownload.download()).equals("true")?"success":"fail")+" by scan task------------------");
             }
         }
         else
@@ -219,5 +223,10 @@ public class ScanDirectory
     public void setCache(Map<String, String> cache)
     {
         this.cache = cache;
+    }
+
+    public void setFtpDownload(FtpDownload ftpDownload)
+    {
+        this.ftpDownload = ftpDownload;
     }
 }

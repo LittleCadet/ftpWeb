@@ -1,5 +1,6 @@
 package com.myproj.servlet;
 
+import com.myproj.service.RegisterService;
 import com.myproj.servlet.init.InitSpring;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,14 @@ public class InitFtpServlet extends HttpServlet
 
             logger.error("log4j:error is ok now");
 
+            //初始化spring容器
             ApplicationContext context = InitSpring.init();
+
+            //获取registerService对象
+            RegisterService registerService = (RegisterService)context.getBean("registerService");
+
+            //向zk注册服务
+            registerService.registerService();
 
             if(logger.isDebugEnabled())
             {
