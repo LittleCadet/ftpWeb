@@ -7,7 +7,9 @@ package com.myproj.constants;
  */
 public interface FtpConstants
 {
-    Integer SUCCESSED = 0;
+    //ftp操作成功
+    public static final Integer SUCCESSED = 0;
 
-    Integer FAILED = 1;
+    //ftp操作失败
+    public static final Integer FAILED = 1;
 }
