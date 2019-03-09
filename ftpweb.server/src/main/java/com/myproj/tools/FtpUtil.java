@@ -79,7 +79,7 @@ public class FtpUtil
                     if(client.isConnected())
                     {
                         //登录ftp
-                        flag = client.login(account,password);
+                        flag = client.login(account,Base64Util.decode(password.getBytes()));
                     }
 
                     if(logger.isDebugEnabled())

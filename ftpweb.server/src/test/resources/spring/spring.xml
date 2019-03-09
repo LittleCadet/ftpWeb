@@ -27,6 +27,21 @@
     <!-- 扫描component -->
     <context:component-scan base-package="com.myproj"/>
 
+    <!-- properties文件解密，重新放入xml中-->
+    <bean id="propertyConfigurer" class="com.myproj.config.PasswordEncryptConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="locations">
+            <list>
+                <value>/jdbc.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id = "testClass" class="ftpTest.TestClass">
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
     <!-- 引入数据源 -->
     <bean id="datasource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
           p:driverClass="${jdbc.driver}" p:jdbcUrl="${jdbc.url}" p:user="${jdbc.username}"

@@ -1,5 +1,7 @@
 package com.myproj.tools;
 
+import org.junit.Test;
+
 import static org.apache.commons.net.util.Base64.decodeBase64;
 import static org.apache.commons.net.util.Base64.encodeBase64;;
 
@@ -30,5 +32,12 @@ public class Base64Util
     public static String decode(byte[] base64Data)
     {
         return new String(decodeBase64(base64Data));
+    }
+
+    @Test
+    public void showInfo()
+    {
+
+        System.out.println(Base64Util.encode("Sx920702".getBytes()));
     }
 }
