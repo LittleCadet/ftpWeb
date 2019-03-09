@@ -38,7 +38,7 @@
         </property>
     </bean>
 
-    <bean id = "testClass" class="ftpTest.TestClass">
+    <bean id = "EnCodeFromPropertiesTest" class="ftpTest.EnCodeFromPropertiesTest">
         <property name="password" value="${jdbc.password}"/>
     </bean>
 

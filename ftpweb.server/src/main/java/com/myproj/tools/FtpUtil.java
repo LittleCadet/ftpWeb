@@ -93,7 +93,7 @@ public class FtpUtil
                     //只要登录失败，就断开ftp连接
                     client.disconnect();
 
-                    logger.error("method:FtpUtil.connectToFtpProcess():login failed:userName:" +account + ",password:"+password );
+                    logger.error("method:FtpUtil.connectToFtpProcess():login failed:userName:" +account);
 
                     return false;
                 }
@@ -105,7 +105,7 @@ public class FtpUtil
             }
             catch (IOException e)
             {
-                logger.error("method:FtpUtil.connectToFtpProcess(): connectToFtp, failed,userName:" + account + ",password:"+password+",\nexception:"+e );
+                logger.error("method:FtpUtil.connectToFtpProcess(): connectToFtp, failed,userName:" + account +",\nexception:"+e );
                 return false;
             }
             return true;
