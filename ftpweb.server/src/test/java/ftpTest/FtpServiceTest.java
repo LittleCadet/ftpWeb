@@ -7,6 +7,7 @@ import com.myproj.service.DeleteService;
 import com.myproj.service.DownloadService;
 import com.myproj.service.ScanService;
 import com.myproj.service.UploadServcie;
+import com.myproj.tools.FtpUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class FtpServiceTest extends Base
 
     private String host = "47.99.112.38";
 
-    private String account = "test";
+    private String account = "test2";
 
     private String password = "test";
 

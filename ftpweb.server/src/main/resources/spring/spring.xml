@@ -38,10 +38,6 @@
         </property>
     </bean>
 
-    <bean id = "testClass" class="ftpTest.TestClass">
-        <property name="password" value="${jdbc.password}"/>
-    </bean>
-
     <!-- 引入数据源 -->
     <bean id="datasource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
           p:driverClass="${jdbc.driver}" p:jdbcUrl="${jdbc.url}" p:user="${jdbc.username}"
@@ -84,31 +80,13 @@
         <property name="remoteDownloadFilePath" value="${remoteDownloadFilePath}"/>
     </bean>
 
-    <bean id="ftpUtil" class="com.myproj.tools.FtpUtil">
+    <!--<bean id="ftpUtil" class="com.myproj.tools.FtpUtil">
         <property name="host" value="${host}"/>
         <property name="account" value="${account}"/>
         <property name="password" value="${password}"/>
         <property name="timeOut" value="${timeOut}"/>
         <property name="reTryTimes" value="${reTryTimes}"/>
-    </bean>
-
-    <bean id = "uploadService" class = "com.myproj.serviceimpl.UploadServcieImpl"/>
-
-    <bean id = "downloadService" class="com.myproj.serviceimpl.DownloadServiceImpl"/>
-
-    <bean id = "deleteService" class="com.myproj.serviceimpl.DeleteServiceImpl"/>
-
-    <bean id = "scanService" class="com.myproj.serviceimpl.ScanServiceImpl"/>
-
-    <bean id = "curatorClient"  class = "com.myproj.entity.CuratorClient">
-        <property name="zkServer" value="${zookeeper.zkServer}" />
-        <property name="port" value="${zookeeper.port}" />
-        <property name="rootNode" value="${zookeeper.rootNode}" />
-        <property name="reTryTimes" value="${zookeeper.reTryTimes}" />
-        <property name="sessionTimeOutMs" value="${zookeeper.sessionTimeOutMs}" />
-        <property name="connectTimeOutMs" value="${zookeeper.connectTimeOutMs}" />
-        <property name="baseSleepTimeMs" value="${zookeeper.baseSleepTimeMs}" />
-    </bean>
+    </bean>-->
 
     <bean id = "registerService" class="com.myproj.serviceimpl.RegisterServiceImpl">
         <property name="childNodePath" value="${zookeeper.childNodePath}" />
@@ -164,13 +142,13 @@
         <property name="triggers">
             <list>
                 <!-- 执行定时下载服务器上文件-->
-                <ref bean="ftpDownloadTrigger" />
+                <!--<ref bean="ftpDownloadTrigger" />-->
 
                 <!-- 执行定时上传到服务器-->
-                <ref bean="ftpUploadTrigger" />
+                <!--<ref bean="ftpUploadTrigger" />-->
 
                 <!-- 执行定时扫描服务器上的文件，一旦变动即可触发下载任务-->
-                <ref bean="scanDirectoryrigger" />
+                <!--<ref bean="scanDirectoryrigger" />-->
             </list>
         </property>
     </bean>

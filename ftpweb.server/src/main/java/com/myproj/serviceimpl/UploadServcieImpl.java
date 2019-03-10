@@ -45,7 +45,7 @@ public class UploadServcieImpl implements UploadServcie
 
         UserFtp userFtp = null;
 
-        if (ftpUpload.upload())
+        if (ftpUpload.upload(record.getLocalUploadFilePath(),record.getRemoteUploadFilePath()))
         {
             userFtp = UserFtpBuilder.build(record.getUserId(), serviceName, FtpConstants.SUCCESSED);
         }

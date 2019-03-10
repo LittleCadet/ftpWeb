@@ -84,13 +84,13 @@
         <property name="remoteDownloadFilePath" value="${remoteDownloadFilePath}"/>
     </bean>
 
-    <bean id="ftpUtil" class="com.myproj.tools.FtpUtil">
+    <!--<bean id="ftpUtil" class="com.myproj.tools.FtpUtil">
         <property name="host" value="${host}"/>
         <property name="account" value="${account}"/>
         <property name="password" value="${password}"/>
         <property name="timeOut" value="${timeOut}"/>
         <property name="reTryTimes" value="${reTryTimes}"/>
-    </bean>
+    </bean>-->
 
     <bean id = "uploadService" class = "com.myproj.serviceimpl.UploadServcieImpl"/>
 

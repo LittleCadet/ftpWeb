@@ -24,7 +24,7 @@ public class FtpTest extends Base
     public void upload()
     {
         FtpUpload ftpUpload = (FtpUpload)context.getBean("ftpUpload");
-        Assert.assertTrue(ftpUpload.upload());
+        Assert.assertTrue(ftpUpload.upload("1","1"));
     }
 
     /**

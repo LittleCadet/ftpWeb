@@ -4,6 +4,7 @@ import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * zk实体类
@@ -18,22 +19,29 @@ public class CuratorClient
     //使用sringBoot完成属性值的自动注入时，属性值不能使用static修饰，因为会自动初始化为null
     //application.properties会默认使用父工程的
     //zk服务器ip
+    @Value("${zookeeper.zkServer}")
     public String zkServer;
 
     //zk端口号
+    @Value("${zookeeper.port}")
     private String port;
 
     //会话超时时间【至关重要：如果会话时间短了，可能连注册服务都不行】
+    @Value("${zookeeper.sessionTimeOutMs}")
     private Integer sessionTimeOutMs;
 
     //连接超时时间
+    @Value("${zookeeper.connectTimeOutMs}")
     private Integer connectTimeOutMs;
 
     //重连次数【针对会话超时】
+    @Value("${zookeeper.reTryTimes}")
     private Integer reTryTimes;
 
+    @Value("${zookeeper.baseSleepTimeMs}")
     private Integer baseSleepTimeMs;
 
+    @Value("${zookeeper.rootNode}")
     private String rootNode;
 
     private String singal = ":";
