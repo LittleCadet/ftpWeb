@@ -1,97 +1,97 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.myproj.dao.UserFtpMapper" >
-  <resultMap id="BaseResultMap" type="com.myproj.entity.UserFtp" >
-    <id column="codeId" property="codeId" jdbcType="INTEGER" />
-    <result column="userId" property="userId" jdbcType="VARCHAR" />
-    <result column="service" property="service" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="createTime" property="createTime" jdbcType="DATE" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    codeId, userId, service, status, createTime
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from userftp
-    where codeId = #{codeId,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from userftp
-    where codeId = #{codeId,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.myproj.entity.UserFtp" >
-    insert into userftp (codeId, userId, service, 
-      status, createTime)
-    values (#{codeId,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{service,jdbcType=VARCHAR}, 
-      #{status,jdbcType=INTEGER}, #{createTime,jdbcType=DATE})
-  </insert>
-  <insert id="insertSelective" parameterType="com.myproj.entity.UserFtp" >
-    insert into userftp
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="codeId != null" >
-        codeId,
-      </if>
-      <if test="userId != null" >
-        userId,
-      </if>
-      <if test="service != null" >
-        service,
-      </if>
-      <if test="status != null" >
-        status,
-      </if>
-      <if test="createTime != null" >
-        createTime,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="codeId != null" >
-        #{codeId,jdbcType=INTEGER},
-      </if>
-      <if test="userId != null" >
-        #{userId,jdbcType=VARCHAR},
-      </if>
-      <if test="service != null" >
-        #{service,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=DATE},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.myproj.entity.UserFtp" >
-    update userftp
-    <set >
-      <if test="userId != null" >
-        userId = #{userId,jdbcType=VARCHAR},
-      </if>
-      <if test="service != null" >
+<mapper namespace="com.myproj.dao.UserFtpMapper">
+    <resultMap id="BaseResultMap" type="com.myproj.entity.UserFtp">
+        <id column="codeId" property="codeId" jdbcType="INTEGER"/>
+        <result column="userId" property="userId" jdbcType="VARCHAR"/>
+        <result column="service" property="service" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="createTime" property="createTime" jdbcType="DATE"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        codeId, userId, service, status, createTime
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from userftp
+        where codeId = #{codeId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from userftp
+        where codeId = #{codeId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.myproj.entity.UserFtp">
+        insert into userftp (codeId, userId, service,
+        status, createTime)
+        values (#{codeId,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{service,jdbcType=VARCHAR},
+        #{status,jdbcType=INTEGER}, #{createTime,jdbcType=DATE})
+    </insert>
+    <insert id="insertSelective" parameterType="com.myproj.entity.UserFtp">
+        insert into userftp
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="codeId != null">
+                codeId,
+            </if>
+            <if test="userId != null">
+                userId,
+            </if>
+            <if test="service != null">
+                service,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="codeId != null">
+                #{codeId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="service != null">
+                #{service,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.myproj.entity.UserFtp">
+        update userftp
+        <set>
+            <if test="userId != null">
+                userId = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="service != null">
+                service = #{service,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime,jdbcType=DATE},
+            </if>
+        </set>
+        where codeId = #{codeId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.myproj.entity.UserFtp">
+        update userftp
+        set userId = #{userId,jdbcType=VARCHAR},
         service = #{service,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
         status = #{status,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null" >
-        createTime = #{createTime,jdbcType=DATE},
-      </if>
-    </set>
-    where codeId = #{codeId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.myproj.entity.UserFtp" >
-    update userftp
-    set userId = #{userId,jdbcType=VARCHAR},
-      service = #{service,jdbcType=VARCHAR},
-      status = #{status,jdbcType=INTEGER},
-      createTime = #{createTime,jdbcType=DATE}
-    where codeId = #{codeId,jdbcType=INTEGER}
-  </update>
+        createTime = #{createTime,jdbcType=DATE}
+        where codeId = #{codeId,jdbcType=INTEGER}
+    </update>
 
-  <select id="selectMaxCodeId" resultType="java.lang.Integer">
-    select max(codeid) from userftp
-  </select>
+    <select id="selectMaxCodeId" resultType="java.lang.Integer">
+        select max(codeid) from userftp
+    </select>
 </mapper>

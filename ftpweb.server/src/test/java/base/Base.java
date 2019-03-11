@@ -1,6 +1,6 @@
 package base;
 
-import com.myproj.servlet.init.InitSpring;
+import init.InitSpring;
 import org.springframework.context.ApplicationContext;
 
 /**

@@ -1,4 +1,4 @@
-package com.myproj.servlet.init;
+package init;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

@@ -60,8 +60,8 @@
     </bean>
 
     <bean id="ftpUpload" class="com.myproj.ftp.FtpUpload">
-        <property name="remoteUploadFilePath" value="${remoteUploadFilePath}"/>
-        <property name="localUploadFilePath" value="${localUploadFilePath}"/>
+        <!--<property name="remoteUploadFilePath" value="${remoteUploadFilePath}"/>
+        <property name="localUploadFilePath" value="${localUploadFilePath}"/>-->
     </bean>
 
     <bean id = "ftpBatchUpload" class="com.myproj.ftp.FtpBatchUpload">
@@ -80,18 +80,20 @@
         <property name="remoteDownloadFilePath" value="${remoteDownloadFilePath}"/>
     </bean>
 
-    <!--<bean id="ftpUtil" class="com.myproj.tools.FtpUtil">
-        <property name="host" value="${host}"/>
+    <bean id="ftpUtil" class="com.myproj.tools.FtpUtil">
+        <!--<property name="host" value="${host}"/>
         <property name="account" value="${account}"/>
-        <property name="password" value="${password}"/>
+        <property name="password" value="${password}"/>-->
         <property name="timeOut" value="${timeOut}"/>
         <property name="reTryTimes" value="${reTryTimes}"/>
-    </bean>-->
+    </bean>
 
     <bean id = "registerService" class="com.myproj.serviceimpl.RegisterServiceImpl">
         <property name="childNodePath" value="${zookeeper.childNodePath}" />
         <property name="serviceName" value="${zookeeper.serviceName}" />
     </bean>
+
+    <bean id = "curatorClient" class="com.myproj.entity.CuratorClient"/>
 
     <!-- 先配置job1-->
     <bean name="ftpDownloadJobBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -149,6 +151,36 @@
 
                 <!-- 执行定时扫描服务器上的文件，一旦变动即可触发下载任务-->
                 <!--<ref bean="scanDirectoryrigger" />-->
+            </list>
+        </property>
+    </bean>
+
+    <!-- 出现报错：通配符的匹配很全面, 但无法找到元素 'mvc:annotation-driven' 的声明-->
+    <!--json解析器配置-->
+    <!--将字符串转换为json-->
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <bean id="stringConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
+                    <property name="supportedMediaTypes">
+                        <list>
+                            <!-- 这里顺序不能反，一定先写text/html,不然ie下出现下载提示 -->
+                            <value>text/html;charset=UTF-8</value>
+                            <value>application/json;charset=UTF-8</value>
+                            <value>text/plain;charset=UTF-8</value>
+                        </list>
+                    </property>
+                </bean>
+                <bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                    <property name="supportedMediaTypes">
+                        <list>
+                            <!-- 这里顺序不能反，一定先写text/html,不然ie下出现下载提示 -->
+                            <value>text/html;charset=UTF-8</value>
+                            <value>application/json;charset=UTF-8</value>
+                            <value>text/plain;charset=UTF-8</value>
+                        </list>
+                    </property>
+                </bean>
             </list>
         </property>
     </bean>

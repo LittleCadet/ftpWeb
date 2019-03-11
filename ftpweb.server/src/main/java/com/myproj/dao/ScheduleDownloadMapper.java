@@ -2,7 +2,8 @@ package com.myproj.dao;
 
 import com.myproj.entity.ScheduleDownload;
 
-public interface ScheduleDownloadMapper {
+public interface ScheduleDownloadMapper extends CommonMapper
+{
     Integer deleteByPrimaryKey(Integer id);
 
     Integer insert(ScheduleDownload record);

@@ -46,9 +46,6 @@ public class FtpUpload
             logger.debug("method: FtpUpload.upload() is entering,localUploadFilePath:" + localUploadFilePath + ",remoteUploadFilePath:" +remoteUploadFilePath);
         }
 
-        this.setLocalUploadFilePath(localUploadFilePath);
-        this.setRemoteUploadFilePath(remoteUploadFilePath);
-
         Boolean flag = false;
 
         if(isNotNull())

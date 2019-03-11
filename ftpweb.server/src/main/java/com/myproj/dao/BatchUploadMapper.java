@@ -2,7 +2,8 @@ package com.myproj.dao;
 
 import com.myproj.entity.BatchUpload;
 
-public interface BatchUploadMapper {
+public interface BatchUploadMapper extends CommonMapper
+{
     Integer deleteByPrimaryKey(Integer id);
 
     Integer insert(BatchUpload record);

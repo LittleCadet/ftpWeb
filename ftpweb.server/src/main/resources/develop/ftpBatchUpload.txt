@@ -1,0 +1,7 @@
+批量本地文件批量上传到服务器对应目录，如下：
+本地文件目录                            服务器目录
+D:\fxDownload\ftpTest\ftpTest.zip               /usr/edward/ftpTest
+D:\fxDownload\ftpTest\ftpTest1.zip              /usr/edward/ftpTest1
+D:\fxDownload\ftpTest\ftpTest2.zip              /usr/edward/ftpTest2
+D:\fxDownload\ftpTest\ftpTest3.zip              /usr/edward/ftpTest2
+D:\fxDownload\ftpTest1\                         /usr/edward/ftpTest2

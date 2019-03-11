@@ -1,12 +1,14 @@
 package ftpTest;
 
 import base.Base;
+import com.myproj.config.PasswordEncryptConfigurer;
 import com.myproj.entity.*;
 import com.myproj.ftp.FtpUpload;
 import com.myproj.service.DeleteService;
 import com.myproj.service.DownloadService;
 import com.myproj.service.ScanService;
 import com.myproj.service.UploadServcie;
+import com.myproj.tools.Base64Util;
 import com.myproj.tools.FtpUtil;
 import org.junit.Assert;
 import org.junit.Test;
@@ -28,7 +30,7 @@ public class FtpServiceTest extends Base
 
     private String host = "47.99.112.38";
 
-    private String account = "test2";
+    private String account = "test";
 
     private String password = "test";
 
@@ -41,7 +43,7 @@ public class FtpServiceTest extends Base
     {
         Upload upload = new Upload();
         upload.setAccount(account);
-        upload.setPassword(password);
+        upload.setPassword(Base64Util.encode(password.getBytes()));
         upload.setHost(host);
         upload.setUserId(userId);
         upload.setLocalUploadFilePath("D:\\fxDownload\\ftpTest\\ftpTest.zip");

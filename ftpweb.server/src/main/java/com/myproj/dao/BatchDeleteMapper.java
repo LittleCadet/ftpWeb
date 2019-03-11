@@ -2,7 +2,8 @@ package com.myproj.dao;
 
 import com.myproj.entity.BatchDelete;
 
-public interface BatchDeleteMapper {
+public interface BatchDeleteMapper
+{
     Integer deleteByPrimaryKey(Integer id);
 
     Integer insert(BatchDelete record);

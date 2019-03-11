@@ -178,6 +178,19 @@
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-x-discovery-server</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -227,6 +240,38 @@
                     </configuration>
                 </plugin>
 
+
+                <plugin>
+                    <!-- 定义资源文件的打包-->
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.6</version>
+                    <executions>
+                        <execution>
+                            <id>copy-xmls</id>
+                            <phase>process-sources</phase>
+                            <goals>
+                                <goal>copy-resources</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>${basedir}/target/classes</outputDirectory>
+                                <resources>
+                                    <resource>
+                                        <directory>${basedir}/src/main/resources/${package.environment}</directory>
+                                        <includes>
+                                            <include>**/*.xml</include>
+                                            <include>**/*.properties</include>
+                                        </includes>
+                                        <excludes>
+                                            <exclude>log4j.properties</exclude>
+                                            <exclude>generatorConfig.xml</exclude>
+                                            <exclude>*.txt</exclude>
+                                        </excludes>
+                                    </resource>
+                                </resources>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
                 <!--<plugin>
                     <dependencies> &lt;!&ndash;此处添加一个mysql-connector-java依赖可以防止找不到jdbc Driver&ndash;&gt;
                         <dependency>
@@ -250,4 +295,23 @@
             </resource>
         </resources>
     </build>
+
+    <profiles>
+        <profile>
+            <id>develop</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <package.environment>develop</package.environment>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>tmt</id>
+            <properties>
+                <package.environment>tmt</package.environment>
+            </properties>
+        </profile>
+    </profiles>
 </project>

@@ -2,7 +2,8 @@ package com.myproj.dao;
 
 import com.myproj.entity.Scan;
 
-public interface ScanMapper {
+public interface ScanMapper extends CommonMapper
+{
     Integer deleteByPrimaryKey(Integer id);
 
     Integer insert(Scan record);

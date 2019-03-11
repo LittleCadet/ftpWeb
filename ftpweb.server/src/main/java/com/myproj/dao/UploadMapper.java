@@ -2,7 +2,8 @@ package com.myproj.dao;
 
 import com.myproj.entity.Upload;
 
-public interface UploadMapper {
+public interface UploadMapper extends CommonMapper
+{
     Integer deleteByPrimaryKey(Integer id);
 
     Integer insert(Upload record);

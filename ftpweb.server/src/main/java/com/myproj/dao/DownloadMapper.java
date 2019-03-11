@@ -2,7 +2,8 @@ package com.myproj.dao;
 
 import com.myproj.entity.Download;
 
-public interface DownloadMapper {
+public interface DownloadMapper extends CommonMapper
+{
     Integer deleteByPrimaryKey(Integer id);
 
     Integer insert(Download record);

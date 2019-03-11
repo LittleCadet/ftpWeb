@@ -2,7 +2,8 @@ package com.myproj.dao;
 
 import com.myproj.entity.UserFtp;
 
-public interface UserFtpMapper {
+public interface UserFtpMapper extends CommonMapper
+{
     Integer deleteByPrimaryKey(Integer codeId);
 
     Integer insert(UserFtp record);

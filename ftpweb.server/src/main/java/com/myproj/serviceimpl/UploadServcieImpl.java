@@ -1,5 +1,6 @@
 package com.myproj.serviceimpl;
 
+import com.myproj.Builder.FtpUtilBuilder;
 import com.myproj.Builder.UserFtpBuilder;
 import com.myproj.constants.FtpConstants;
 import com.myproj.dao.UploadMapper;
@@ -9,6 +10,7 @@ import com.myproj.entity.UserFtp;
 import com.myproj.ftp.FtpUpload;
 import com.myproj.service.UploadServcie;
 import com.myproj.tools.Base64Util;
+import com.myproj.tools.FtpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,9 @@ public class UploadServcieImpl implements UploadServcie
         }
 
         UserFtp userFtp = null;
+
+        //构建FtpUtil
+        FtpUtilBuilder.build(record.getHost(),record.getAccount(),record.getPassword());
 
         if (ftpUpload.upload(record.getLocalUploadFilePath(),record.getRemoteUploadFilePath()))
         {
@@ -103,5 +108,4 @@ public class UploadServcieImpl implements UploadServcie
     {
         return uploadMapper.deleteByPrimaryKey(id);
     }
-
 }
