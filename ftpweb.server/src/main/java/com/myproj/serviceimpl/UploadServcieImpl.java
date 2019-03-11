@@ -42,13 +42,13 @@ public class UploadServcieImpl implements UploadServcie
     {
         if (logger.isDebugEnabled())
         {
-            logger.debug("enter into UploadServcieImpl.insert();record:" + record);
+            logger.debug("enter into UploadServcieImpl.insert();record:" + record.toString());
         }
 
         UserFtp userFtp = null;
 
         //构建FtpUtil
-        FtpUtilBuilder.build(record.getHost(),record.getAccount(),record.getPassword());
+        FtpUtilBuilder.build(record.getHost(),record.getAccount(),Base64Util.encode(record.getPassword().getBytes()));
 
         if (ftpUpload.upload(record.getLocalUploadFilePath(),record.getRemoteUploadFilePath()))
         {
@@ -71,12 +71,18 @@ public class UploadServcieImpl implements UploadServcie
         record.setCodeId(userFtpMapper.selectMaxCodeId());
         record.setCreateTime(userFtp.getCreateTime());
         record.setPassword(Base64Util.encode(record.getPassword().getBytes()));
+        record.setReTryTimes(FtpUtil.getReTryTimes());
+        record.setTimeOut(FtpUtil.getTimeOut());
+
+        //向upload表中插入记录
+        uploadMapper.insert(record);
 
         if (logger.isDebugEnabled())
         {
-            logger.debug("exit from UploadServcieImpl.insert();record :" + record);
+            logger.debug("exit from UploadServcieImpl.insert();codeId :" + record.getCodeId() + ",success to insert into userFtp,Upload");
         }
-        return uploadMapper.insert(record);
+
+        return userFtp.getStatus();
     }
 
     @Override

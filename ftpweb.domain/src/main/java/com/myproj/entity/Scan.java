@@ -50,7 +50,7 @@ public class Scan extends FtpService
     @Override
     public String toString()
     {
-        return "Scan{" +
+        return super.toString() + ",Scan{" +
             "localDownloadFilePath='" + localDownloadFilePath + '\'' +
             ", remoteScanFilePath='" + remoteScanFilePath + '\'' +
             '}';

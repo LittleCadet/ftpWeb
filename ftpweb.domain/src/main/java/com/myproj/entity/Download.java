@@ -50,7 +50,7 @@ public class Download extends FtpService
     @Override
     public String toString()
     {
-        return "Download{" +
+        return super.toString() + ",Download{" +
             "remoteDownloadFilePath='" + remoteDownloadFilePath + '\'' +
             ", localDownloadFilePath='" + localDownloadFilePath + '\'' +
             '}';

@@ -256,7 +256,7 @@
                                 <outputDirectory>${basedir}/target/classes</outputDirectory>
                                 <resources>
                                     <resource>
-                                        <directory>${basedir}/src/main/resources/${package.environment}</directory>
+                                        <directory>${basedir}/src/main/resources</directory>
                                         <includes>
                                             <include>**/*.xml</include>
                                             <include>**/*.properties</include>
@@ -299,9 +299,9 @@
     <profiles>
         <profile>
             <id>develop</id>
-            <activation>
+            <!--<activation>
                 <activeByDefault>true</activeByDefault>
-            </activation>
+            </activation>-->
             <properties>
                 <package.environment>develop</package.environment>
             </properties>

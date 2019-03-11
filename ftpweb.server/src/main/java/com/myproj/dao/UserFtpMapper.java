@@ -2,7 +2,7 @@ package com.myproj.dao;
 
 import com.myproj.entity.UserFtp;
 
-public interface UserFtpMapper extends CommonMapper
+public interface UserFtpMapper
 {
     Integer deleteByPrimaryKey(Integer codeId);
 

@@ -1,5 +1,6 @@
 package com.myproj.serviceimpl;
 
+import com.myproj.Builder.FtpUtilBuilder;
 import com.myproj.Builder.UserFtpBuilder;
 import com.myproj.constants.FtpConstants;
 import com.myproj.dao.ScheduleUploadMapper;
@@ -8,6 +9,7 @@ import com.myproj.entity.ScheduleUpload;
 import com.myproj.entity.UserFtp;
 import com.myproj.service.ScheduleUploadService;
 import com.myproj.tools.Base64Util;
+import com.myproj.tools.FtpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,9 @@ public class ScheduleUploadServiceImpl implements ScheduleUploadService
 
         UserFtp userFtp = UserFtpBuilder.build(record.getUserId(), serviceName, FtpConstants.SUCCESSED);
 
+        //构建FtpUtil
+        FtpUtilBuilder.build(record.getHost(),record.getAccount(),Base64Util.encode(record.getPassword().getBytes()));
+
         if (logger.isDebugEnabled())
         {
             logger.debug("request of userFtpMapper is :" + userFtp);
@@ -52,10 +57,12 @@ public class ScheduleUploadServiceImpl implements ScheduleUploadService
         record.setCodeId(userFtpMapper.selectMaxCodeId());
         record.setCreateTime(userFtp.getCreateTime());
         record.setPassword(Base64Util.encode(record.getPassword().getBytes()));
+        record.setReTryTimes(FtpUtil.getReTryTimes());
+        record.setTimeOut(FtpUtil.getTimeOut());
 
         if (logger.isDebugEnabled())
         {
-            logger.debug("exit from ScheduleUploadServiceImpl.insert(); record :" + record);
+            logger.debug("exit from ScheduleUploadServiceImpl.insert(); codeId :" + record.getCodeId() + ",success to insert into userFtp,Upload");
         }
 
         return scheduleUploadMapper.insert(record);

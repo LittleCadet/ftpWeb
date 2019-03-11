@@ -50,7 +50,7 @@ public class Upload extends FtpService
     @Override
     public String toString()
     {
-        return "Upload{" +
+        return super.toString() + ",Upload{" +
             "remoteUploadFilePath='" + remoteUploadFilePath + '\'' +
             ", localUploadFilePath='" + localUploadFilePath + '\'' +
             '}';

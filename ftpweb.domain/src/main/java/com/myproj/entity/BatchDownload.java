@@ -50,7 +50,7 @@ public class BatchDownload extends FtpService
     @Override
     public String toString()
     {
-        return "BatchDownload{" +
+        return super.toString() + ",BatchDownload{" +
             "localDownloadFilePath='" + localDownloadFilePath + '\'' +
             ", batchDownloadFilePath='" + batchDownloadFilePath + '\'' +
             '}';

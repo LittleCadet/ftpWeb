@@ -2,7 +2,7 @@ package com.myproj.dao;
 
 import com.myproj.entity.BatchDownload;
 
-public interface BatchDownloadMapper extends CommonMapper
+public interface BatchDownloadMapper
 {
     Integer deleteByPrimaryKey(Integer id);
 

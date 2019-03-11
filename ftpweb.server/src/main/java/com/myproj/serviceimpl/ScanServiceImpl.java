@@ -1,5 +1,6 @@
 package com.myproj.serviceimpl;
 
+import com.myproj.Builder.FtpUtilBuilder;
 import com.myproj.Builder.UserFtpBuilder;
 import com.myproj.constants.FtpConstants;
 import com.myproj.dao.ScanMapper;
@@ -9,6 +10,7 @@ import com.myproj.entity.UserFtp;
 import com.myproj.ftp.ScanDirectory;
 import com.myproj.service.ScanService;
 import com.myproj.tools.Base64Util;
+import com.myproj.tools.FtpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,9 @@ public class ScanServiceImpl implements ScanService
         }
         UserFtp userFtp = null;
 
+        //构建FtpUtil
+        FtpUtilBuilder.build(record.getHost(),record.getAccount(),Base64Util.encode(record.getPassword().getBytes()));
+
         if (scanDirectory.scan())
         {
             userFtp = UserFtpBuilder.build(record.getUserId(), serviceName, FtpConstants.SUCCESSED);
@@ -64,10 +69,12 @@ public class ScanServiceImpl implements ScanService
         record.setCodeId(userFtpMapper.selectMaxCodeId());
         record.setCreateTime(userFtp.getCreateTime());
         record.setPassword(Base64Util.encode(record.getPassword().getBytes()));
+        record.setReTryTimes(FtpUtil.getReTryTimes());
+        record.setTimeOut(FtpUtil.getTimeOut());
 
         if (logger.isDebugEnabled())
         {
-            logger.debug("exit from ScanServiceImpl.insert();record:" + record);
+            logger.debug("exit from ScanServiceImpl.insert();codeId :" + record.getCodeId() + ",success to insert into userFtp,Upload");
         }
         return scanMapper.insert(record);
     }

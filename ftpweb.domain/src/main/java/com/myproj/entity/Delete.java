@@ -34,7 +34,7 @@ public class Delete extends FtpService
     @Override
     public String toString()
     {
-        return "Delete{" +
+        return super.toString() + ",Delete{" +
             "remoteDeleteFilePath='" + remoteDeleteFilePath + '\'' +
             '}';
     }

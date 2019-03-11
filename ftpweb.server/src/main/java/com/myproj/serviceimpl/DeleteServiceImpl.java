@@ -1,5 +1,6 @@
 package com.myproj.serviceimpl;
 
+import com.myproj.Builder.FtpUtilBuilder;
 import com.myproj.Builder.UserFtpBuilder;
 import com.myproj.constants.FtpConstants;
 import com.myproj.dao.DeleteMapper;
@@ -9,6 +10,7 @@ import com.myproj.entity.UserFtp;
 import com.myproj.ftp.FtpDelete;
 import com.myproj.service.DeleteService;
 import com.myproj.tools.Base64Util;
+import com.myproj.tools.FtpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,9 @@ public class DeleteServiceImpl implements DeleteService
         }
         UserFtp userFtp = null;
 
+        //构造ftpUtil
+        FtpUtilBuilder.build(record.getHost(),record.getAccount(),Base64Util.encode(record.getPassword().getBytes()));
+
         if(ftpDelete.deleteFile())
         {
             userFtp = UserFtpBuilder.build(record.getUserId(), serviceName, FtpConstants.SUCCESSED);
@@ -64,12 +69,16 @@ public class DeleteServiceImpl implements DeleteService
         record.setCodeId(userFtpMapper.selectMaxCodeId());
         record.setCreateTime(userFtp.getCreateTime());
         record.setPassword(Base64Util.encode(record.getPassword().getBytes()));
+        record.setReTryTimes(FtpUtil.getReTryTimes());
+        record.setTimeOut(FtpUtil.getTimeOut());
+
+        deleteMapper.insert(record);
 
         if (logger.isDebugEnabled())
         {
-            logger.debug("exit from DeleteServiceImpl.insert(); record :" + record);
+            logger.debug("exit from DeleteServiceImpl.insert();codeId :" + record.getCodeId() + ",success to insert into userFtp,Upload");
         }
-        return deleteMapper.insert(record);
+        return userFtp.getStatus();
     }
 
     @Override

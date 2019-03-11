@@ -1,5 +1,6 @@
 package com.myproj.serviceimpl;
 
+import com.myproj.Builder.FtpUtilBuilder;
 import com.myproj.Builder.UserFtpBuilder;
 import com.myproj.constants.FtpConstants;
 import com.myproj.dao.DownloadMapper;
@@ -9,6 +10,7 @@ import com.myproj.entity.UserFtp;
 import com.myproj.ftp.FtpDownload;
 import com.myproj.service.DownloadService;
 import com.myproj.tools.Base64Util;
+import com.myproj.tools.FtpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,9 @@ public class DownloadServiceImpl implements DownloadService
         }
         UserFtp userFtp = null;
 
+        //构造ftpUtil
+        FtpUtilBuilder.build(record.getHost(),record.getAccount(),Base64Util.encode(record.getPassword().getBytes()));
+
         if (ftpDownload.download())
         {
             userFtp = UserFtpBuilder.build(record.getUserId(), serviceName, FtpConstants.SUCCESSED);
@@ -65,12 +70,16 @@ public class DownloadServiceImpl implements DownloadService
         record.setCodeId(userFtpMapper.selectMaxCodeId());
         record.setCreateTime(userFtp.getCreateTime());
         record.setPassword(Base64Util.encode(record.getPassword().getBytes()));
+        record.setReTryTimes(FtpUtil.getReTryTimes());
+        record.setTimeOut(FtpUtil.getTimeOut());
+
+        downloadMapper.insert(record);
 
         if (logger.isDebugEnabled())
         {
-            logger.debug("exit from DownloadServiceImpl.insert();record :" + record);
+            logger.debug("exit from DownloadServiceImpl.insert();codeId :" + record.getCodeId() + ",success to insert into userFtp,Upload");
         }
-        return downloadMapper.insert(record);
+        return userFtp.getStatus();
     }
 
     @Override

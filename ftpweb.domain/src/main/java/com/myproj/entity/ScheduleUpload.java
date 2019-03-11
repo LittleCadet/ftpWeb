@@ -50,7 +50,7 @@ public class ScheduleUpload extends FtpService
     @Override
     public String toString()
     {
-        return "ScheduleUpload{" +
+        return super.toString() + ",ScheduleUpload{" +
             "remoteScheduleUploadFilePath='" + remoteScheduleUploadFilePath + '\'' +
             ", localUploadFilePath='" + localUploadFilePath + '\'' +
             '}';

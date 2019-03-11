@@ -2,7 +2,7 @@ package com.myproj.dao;
 
 import com.myproj.entity.Delete;
 
-public interface DeleteMapper extends CommonMapper
+public interface DeleteMapper
 {
     Integer deleteByPrimaryKey(Integer id);
 

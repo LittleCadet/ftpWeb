@@ -34,7 +34,7 @@ public class BatchDelete extends FtpService
     @Override
     public String toString()
     {
-        return "BatchDelete{" +
+        return super.toString() + ",BatchDelete{" +
             "batchDeleteFilePath='" + batchDeleteFilePath + '\'' +
             '}';
     }
