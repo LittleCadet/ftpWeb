@@ -55,12 +55,12 @@
           p:basePackage="com.myproj.dao" p:sqlSessionFactoryBeanName="sqlSessionFactoryBean"/>
 
     <bean id="ftpDelete" class="com.myproj.ftp.FtpDelete">
-        <property name="remoteDeleteFilePath" value="${remoteDeleteFilePath}"/>
+        <!--<property name="remoteDeleteFilePath" value="${remoteDeleteFilePath}"/>-->
     </bean>
 
     <bean id="ftpDownload" class="com.myproj.ftp.FtpDownload">
-        <property name="remoteDownloadFilePath" value="${remoteDownloadFilePath}"/>
-        <property name="localDownloadFilePath" value="${localDownloadFilePath}"/>
+        <!--<property name="remoteDownloadFilePath" value="${remoteDownloadFilePath}"/>
+        <property name="localDownloadFilePath" value="${localDownloadFilePath}"/>-->
     </bean>
 
     <bean id="ftpUpload" class="com.myproj.ftp.FtpUpload">

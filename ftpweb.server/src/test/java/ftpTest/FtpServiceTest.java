@@ -22,12 +22,6 @@ import java.util.Date;
  */
 public class FtpServiceTest extends Base
 {
-   /* @Autowired
-    private UploadServcie uploadServcie;
-
-    @Autowired
-    //private DownloadService downloadService;*/
-
     private String host = "47.99.112.38";
 
     private String account = "test";
@@ -38,20 +32,26 @@ public class FtpServiceTest extends Base
 
     private Boolean scan_switch = false;
 
+    /**
+     * 单点上传
+     */
     @Test
     public void upload()
     {
         Upload upload = new Upload();
         upload.setAccount(account);
-        upload.setPassword(Base64Util.encode(password.getBytes()));
+        upload.setPassword(password);
         upload.setHost(host);
         upload.setUserId(userId);
         upload.setLocalUploadFilePath("D:\\fxDownload\\ftpTest\\ftpTest.zip");
         upload.setRemoteUploadFilePath("/usr/test/ftpTest");
         UploadServcie uploadServcie = (UploadServcie)context.getBean("uploadService");
-        Assert.assertEquals(1, uploadServcie.insert(upload));
+        Assert.assertEquals(0, uploadServcie.insert(upload));
     }
 
+    /**
+     * 单点下载
+     */
     @Test
     public void download()
     {
@@ -60,12 +60,15 @@ public class FtpServiceTest extends Base
         download.setPassword(password);
         download.setHost(host);
         download.setUserId(userId);
-        download.setLocalDownloadFilePath("/usr/edward/ftpTest/ftpTest.zip");
-        download.setRemoteDownloadFilePath("D:\\test\\ftpTest2");
+        download.setLocalDownloadFilePath("D:\\fxDownload\\ftpTest2");
+        download.setRemoteDownloadFilePath("/usr/test/ftpTest/ftpTest.zip");
         DownloadService downloadService = (DownloadService)context.getBean("downloadService");
-        Assert.assertEquals(1, downloadService.insert(download));
+        Assert.assertEquals(0, downloadService.insert(download));
     }
 
+    /**
+     * 单点删除
+     */
     @Test
     public void delete()
     {
@@ -76,9 +79,12 @@ public class FtpServiceTest extends Base
         delete.setUserId(userId);
         delete.setRemoteDeleteFilePath("/usr/test/ftpTest/ftpTest.zip");
         DeleteService deleteService = (DeleteService)context.getBean("deleteService");
-        Assert.assertEquals(1, deleteService.insert(delete));
+        Assert.assertEquals(0, deleteService.insert(delete));
     }
 
+    /**
+     * 单点扫描
+     */
     @Test
     public void scan()
     {

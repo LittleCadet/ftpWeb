@@ -11,6 +11,7 @@ import com.myproj.ftp.FtpDownload;
 import com.myproj.service.DownloadService;
 import com.myproj.tools.Base64Util;
 import com.myproj.tools.FtpUtil;
+import com.myproj.tools.IsLinuxUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ public class DownloadServiceImpl implements DownloadService
         //构造ftpUtil
         FtpUtilBuilder.build(record.getHost(),record.getAccount(),Base64Util.encode(record.getPassword().getBytes()));
 
-        if (ftpDownload.download())
+        if (ftpDownload.download(record.getRemoteDownloadFilePath(),record.getLocalDownloadFilePath(),IsLinuxUtil.isLinux()))
         {
             userFtp = UserFtpBuilder.build(record.getUserId(), serviceName, FtpConstants.SUCCESSED);
         }

@@ -25,12 +25,35 @@ public class FtpDelete
     private FTPClient client = FtpUtil.init();
 
     /**
+     * 供以后定时任务使用
      * 删除指定目录下的指定文件，但是不能删除文件夹
      * @return 判定是否已删除
      */
     public boolean deleteFile()
     {
         boolean flag = false;
+
+        if(isNotNull())
+        {
+            //连接到ftp
+            if(FtpUtil.connectToFtp())
+            {
+                flag = deleteProcess();
+            }
+        }
+
+        return flag;
+    }
+
+    /**
+     * 删除指定目录下的指定文件，但是不能删除文件夹
+     * @return 判定是否已删除
+     */
+    public boolean deleteFile(String remoteDeleteFilePath)
+    {
+        boolean flag = false;
+
+        this.remoteDeleteFilePath = remoteDeleteFilePath;
 
         if(isNotNull())
         {

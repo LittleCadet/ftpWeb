@@ -1,6 +1,8 @@
 package com.myproj.ftp;
 
+import com.myproj.constants.FtpConstants;
 import com.myproj.tools.FtpUtil;
+import com.myproj.tools.IsLinuxUtil;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.slf4j.Logger;
@@ -37,13 +39,51 @@ public class FtpDownload
     //计数：ftp下载动作一共执行多少次
     private Integer count = 0;
 
+    //windows的开关，1：关闭，0：开启
+    private Integer windows_switch = 1;
+
     /**
+     * 供定时任务使用
      * 下载文件
      * @return 判定是否下载完成
      */
     public boolean download()
     {
         boolean flag = false;
+
+        if(isNotNull())
+        {
+            //建立ftp连接
+            if(FtpUtil.connectToFtp())
+            {
+                //下载操作
+                flag = downloadProcess();
+
+                count ++;
+            }
+        }
+
+        if(logger.isDebugEnabled())
+        {
+            logger.debug("------------downloaded file in" + new Date() + "------------");
+            logger.debug("------------downloaded times:  " + count + "  times------------");
+            logger.debug("method: download() was exited");
+        }
+        return flag;
+
+    }
+
+    /**
+     * 下载文件
+     * @return 判定是否下载完成
+     */
+    public boolean download(String remoteDownloadFilePath,String localDownloadFilePath,Integer windowsSwitch)
+    {
+        boolean flag = false;
+
+        this.windows_switch = windowsSwitch;
+        this.remoteDownloadFilePath = remoteDownloadFilePath;
+        this.localDownloadFilePath = localDownloadFilePath;
 
         if(isNotNull())
         {
@@ -202,9 +242,22 @@ public class FtpDownload
             }
         }
 
-        if(!SPLIT_FORWARD_SLASH.equals(localDownloadFilePath.substring(localDownloadFilePath.lastIndexOf(SPLIT_BACKSLASH))))
+        //本地测试，用‘\\’，服务器跑定时任务，用‘/’
+        if (IsLinuxUtil.isWindows() || !FtpConstants.WINDOWS_SWITCH.equals(windows_switch))
         {
-            localDownloadFilePath = this.localDownloadFilePath + SPLIT_FORWARD_SLASH;
+            if (!SPLIT_BACKSLASH.equals(localDownloadFilePath.substring(localDownloadFilePath.lastIndexOf(
+                SPLIT_BACKSLASH))))
+            {
+                localDownloadFilePath = this.localDownloadFilePath + SPLIT_BACKSLASH;
+            }
+        }
+        else
+        {
+            if (!SPLIT_FORWARD_SLASH.equals(localDownloadFilePath.substring(localDownloadFilePath.lastIndexOf(
+                SPLIT_FORWARD_SLASH))))
+            {
+                localDownloadFilePath = this.localDownloadFilePath + SPLIT_FORWARD_SLASH;
+            }
         }
 
         //拼接本地路径，否则在创建输出流时，会报文件找不到异常

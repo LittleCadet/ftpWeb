@@ -49,7 +49,7 @@ public class DeleteServiceImpl implements DeleteService
         //构造ftpUtil
         FtpUtilBuilder.build(record.getHost(),record.getAccount(),Base64Util.encode(record.getPassword().getBytes()));
 
-        if(ftpDelete.deleteFile())
+        if(ftpDelete.deleteFile(record.getRemoteDeleteFilePath()))
         {
             userFtp = UserFtpBuilder.build(record.getUserId(), serviceName, FtpConstants.SUCCESSED);
         }

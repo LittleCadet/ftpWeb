@@ -12,4 +12,7 @@ public interface FtpConstants
 
     //ftp操作失败
     public static final Integer FAILED = 1;
+
+    //windows开关，1：关，0：开
+    public static final Integer WINDOWS_SWITCH = 1;
 }
