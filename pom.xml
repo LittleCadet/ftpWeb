@@ -252,13 +252,15 @@
 
     <repositories>
         <repository>
-            <id>snapshots</id>
+            <id>central</id>
             <url>http://maven.aliyun.com/nexus/content/groups/public</url>
             <releases>
                 <enabled>false</enabled>
+                <updatePolicy>never</updatePolicy>
             </releases>
             <snapshots>
                 <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
             </snapshots>
         </repository>
     </repositories>

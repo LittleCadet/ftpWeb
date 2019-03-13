@@ -15,7 +15,7 @@
     http://www.springframework.org/schema/tx
     http://www.springframework.org/schema/tx/spring-tx.xsd
     http://www.springframework.org/schema/mvc
-    http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
 
     <!-- mvc注解驱动 -->
     <mvc:annotation-driven />
@@ -36,10 +36,6 @@
                 <value>/jdbc.properties</value>
             </list>
         </property>
-    </bean>
-
-    <bean id = "EnCodeFromPropertiesTest" class="ftpTest.EnCodeFromPropertiesTest">
-        <property name="password" value="${jdbc.password}"/>
     </bean>
 
     <!-- 引入数据源 -->
@@ -92,28 +88,12 @@
         <property name="reTryTimes" value="${reTryTimes}"/>
     </bean>
 
-    <bean id = "uploadService" class = "com.myproj.serviceimpl.UploadServcieImpl"/>
-
-    <bean id = "downloadService" class="com.myproj.serviceimpl.DownloadServiceImpl"/>
-
-    <bean id = "deleteService" class="com.myproj.serviceimpl.DeleteServiceImpl"/>
-
-    <bean id = "scanService" class="com.myproj.serviceimpl.ScanServiceImpl"/>
-
-    <bean id = "curatorClient"  class = "com.myproj.entity.CuratorClient">
-        <property name="zkServer" value="${zookeeper.zkServer}" />
-        <property name="port" value="${zookeeper.port}" />
-        <property name="rootNode" value="${zookeeper.rootNode}" />
-        <property name="reTryTimes" value="${zookeeper.reTryTimes}" />
-        <property name="sessionTimeOutMs" value="${zookeeper.sessionTimeOutMs}" />
-        <property name="connectTimeOutMs" value="${zookeeper.connectTimeOutMs}" />
-        <property name="baseSleepTimeMs" value="${zookeeper.baseSleepTimeMs}" />
-    </bean>
-
     <bean id = "registerService" class="com.myproj.serviceimpl.RegisterServiceImpl">
         <property name="childNodePath" value="${zookeeper.childNodePath}" />
         <property name="serviceName" value="${zookeeper.serviceName}" />
     </bean>
+
+    <bean id = "curatorClient" class="com.myproj.entity.CuratorClient"/>
 
     <!-- 先配置job1-->
     <bean name="ftpDownloadJobBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
