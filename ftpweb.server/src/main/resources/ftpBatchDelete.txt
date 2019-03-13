@@ -1,4 +1,0 @@
-批量删除服务器上的文件的对应目录，如下：
-/usr/edward/ftpTest/ftpTest.zip
-/usr/edward/ftpTest1/ftpTest1.zip
-/usr/edward/ftpTest2/
