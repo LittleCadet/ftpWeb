@@ -10,6 +10,7 @@
     <modules>
         <module>ftpweb.domain</module>
         <module>ftpweb.server</module>
+        <module>ftpweb.war</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -182,6 +183,12 @@
             <dependency>
                 <groupId>com.myproj</groupId>
                 <artifactId>ftpweb.domain</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.myproj</groupId>
+                <artifactId>ftpweb.server</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
 
