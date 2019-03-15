@@ -7,6 +7,7 @@
     <groupId>com.myproj</groupId>
     <artifactId>ftpWeb</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -174,18 +175,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.myproj</groupId>
-            <artifactId>ftpweb.domain</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.myproj</groupId>
-            <artifactId>ftpweb.server</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.mchange</groupId>
             <artifactId>c3p0</artifactId>
             <version>0.9.5.2</version>
@@ -255,14 +244,6 @@
                 <version>2.7.1</version>
                 <configuration>
                     <skip>true</skip>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.3</version>
-                <configuration>
-                    <jarName>${project.artifactId}-${project.version}</jarName>
                 </configuration>
             </plugin>
             <plugin>
