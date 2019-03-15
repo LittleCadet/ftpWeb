@@ -3,5 +3,10 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>Archetype Created Web Application</display-name>
+  <display-name>ftpWeb</display-name>
+  <servlet>
+    <servlet-name>InitFtpServlet</servlet-name>
+    <servlet-class>com.myproj.servlet.InitFtpServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
 </web-app>

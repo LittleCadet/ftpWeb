@@ -15,7 +15,7 @@
     http://www.springframework.org/schema/tx
     http://www.springframework.org/schema/tx/spring-tx.xsd
     http://www.springframework.org/schema/mvc
-    http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
+    http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <!-- mvc注解驱动 -->
     <mvc:annotation-driven />
@@ -36,6 +36,10 @@
                 <value>/jdbc.properties</value>
             </list>
         </property>
+    </bean>
+
+    <bean id = "EnCodeFromPropertiesTest" class="ftpTest.EnCodeFromPropertiesTest">
+        <property name="password" value="${jdbc.password}"/>
     </bean>
 
     <!-- 引入数据源 -->

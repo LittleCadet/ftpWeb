@@ -12,7 +12,7 @@ import java.util.*;
 
 /**
  * ftp批量下载：支持将服务器指定目录下的文件下载到指定的本地位置上
- * 沈燮
+ * LettleCadet
  * 2019/1/4
  **/
 public class FtpBatchDownload

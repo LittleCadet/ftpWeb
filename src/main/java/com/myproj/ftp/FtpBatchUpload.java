@@ -12,7 +12,7 @@ import java.util.*;
 
 /**
  * ftp的批量删除，支持不同目录下的文件上传到指定目录
- * 沈燮
+ * LettleCadet
  * 2019/1/3
  **/
 public class FtpBatchUpload

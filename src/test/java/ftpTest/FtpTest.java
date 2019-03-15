@@ -1,7 +1,8 @@
 package ftpTest;
 
+import base.Base;
+import com.myproj.servlet.init.InitSpring;
 import com.myproj.ftp.*;
-import init.InitSpring;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -11,13 +12,11 @@ import java.util.Date;
 /**
  * ftp功能测试类
  *
- * @Author 沈燮
+ * @Author LettleCadet
  * @Date 2018/12/27
  */
-public class FtpTest
+public class FtpTest extends Base
 {
-    private static ApplicationContext context = InitSpring.init();
-
     /**
      * 用ftp上传到服务器上指定文件到指定目录下
      */
@@ -108,7 +107,7 @@ public class FtpTest
             //20秒内只能有一次下载动作
             Thread.sleep(20000);
 
-            System.out.println("-------------开始执行文件上传操作-------------");
+            System.out.println("-------------开始执行文件上传操作：" + new Date() + "-------------");
 
             //更新服务器上的文件的时间
             upload();

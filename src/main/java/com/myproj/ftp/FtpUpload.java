@@ -10,7 +10,7 @@ import java.util.Date;
 
 /**
  * ftp上传操作
- * @author： 沈燮
+ * @author： LettleCadet
  * @CreateDate:2018/12/21
  */
 public class FtpUpload
@@ -35,6 +35,7 @@ public class FtpUpload
     private Integer count = 0;
 
     /**
+     * 供定时任务使用
      * ftp上传到指定服务器：根据ip和端口号连接到ftp，根据用户名，密码登录ftp，将二进制文件上到ftp（3次机会），关流，注销ftp用户，ftp断开连接
      * @return 判定是否上传完成
      */
@@ -42,8 +43,9 @@ public class FtpUpload
     {
         if(logger.isDebugEnabled())
         {
-            logger.debug("method: FtpUpload.upload() is entering");
+            logger.debug("method: FtpUpload.upload() is entering,localUploadFilePath:" + localUploadFilePath + ",remoteUploadFilePath:" +remoteUploadFilePath);
         }
+
         Boolean flag = false;
 
         if(isNotNull())
@@ -61,7 +63,44 @@ public class FtpUpload
         {
             logger.debug("------------uploaded file in" + new Date() + "------------");
             logger.debug("------------uploaded times:  " + count + "  times------------");
-            logger.debug("method: upload() was existed");
+            logger.debug("method: upload() was exited");
+        }
+        return flag;
+    }
+
+    /**
+     * 供页面调用
+     * ftp上传到指定服务器：根据ip和端口号连接到ftp，根据用户名，密码登录ftp，将二进制文件上到ftp（3次机会），关流，注销ftp用户，ftp断开连接
+     * @return 判定是否上传完成
+     */
+    public Boolean upload(String localUploadFilePath,String remoteUploadFilePath)
+    {
+        if(logger.isDebugEnabled())
+        {
+            logger.debug("method: FtpUpload.upload() is entering,localUploadFilePath:" + localUploadFilePath + ",remoteUploadFilePath:" +remoteUploadFilePath);
+        }
+
+        this.setLocalUploadFilePath(localUploadFilePath);
+        this.setRemoteUploadFilePath(remoteUploadFilePath);
+
+        Boolean flag = false;
+
+        if(isNotNull())
+        {
+            if (FtpUtil.connectToFtp())
+            {
+                //开始上传操作
+                flag = uploadFileToFtp();
+
+                count ++;
+            }
+        }
+
+        if(logger.isDebugEnabled())
+        {
+            logger.debug("------------uploaded file in" + new Date() + "------------");
+            logger.debug("------------uploaded times:  " + count + "  times------------");
+            logger.debug("method: upload() was exited");
         }
         return flag;
     }

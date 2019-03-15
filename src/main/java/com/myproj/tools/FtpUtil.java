@@ -11,7 +11,7 @@ import java.io.InputStream;
 
 /**
  * ftp的工具类
- * @Author 沈燮
+ * @Author LettleCadet
  * @Date 2018/12/27
  */
 public class FtpUtil
@@ -79,7 +79,7 @@ public class FtpUtil
                     if(client.isConnected())
                     {
                         //登录ftp
-                        flag = client.login(account,password);
+                        flag = client.login(account,Base64Util.decode(password.getBytes()));
                     }
 
                     if(logger.isDebugEnabled())
@@ -93,7 +93,7 @@ public class FtpUtil
                     //只要登录失败，就断开ftp连接
                     client.disconnect();
 
-                    logger.error("method:FtpUtil.connectToFtpProcess():login failed:userName:" +account + ",password:"+password );
+                    logger.error("method:FtpUtil.connectToFtpProcess():login failed:userName:" +account);
 
                     return false;
                 }
@@ -105,7 +105,7 @@ public class FtpUtil
             }
             catch (IOException e)
             {
-                logger.error("method:FtpUtil.connectToFtpProcess(): connectToFtp, failed,userName:" + account + ",password:"+password+",\nexception:"+e );
+                logger.error("method:FtpUtil.connectToFtpProcess(): connectToFtp, failed,userName:" + account +",\nexception:"+e );
                 return false;
             }
             return true;

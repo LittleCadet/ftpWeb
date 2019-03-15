@@ -1,23 +1,24 @@
-package com.myproj.domain;
+package com.myproj.servlet;
 
-import com.myproj.domain.init.InitSpring;
-import com.myproj.ftp.FtpUpload;
+import com.myproj.servlet.init.InitSpring;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
+import javax.servlet.http.HttpServlet;
 import java.util.Date;
 
 /**
  * 让tomcat 调用
- * 沈燮
+ * LettleCadet
  * 2019/1/3
  **/
-public class Ftp
+public class InitFtpServlet extends HttpServlet
 {
-    private static final Logger logger = LoggerFactory.getLogger(Ftp.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(InitFtpServlet.class.getName());
 
-    public static void main(String[] args)
+
+     public void init()
     {
         try
         {
@@ -29,13 +30,13 @@ public class Ftp
 
             logger.error("log4j:error is ok now");
 
+            //初始化spring容器
             ApplicationContext context = InitSpring.init();
 
             if(logger.isDebugEnabled())
             {
                 logger.debug("--------------time:"+ new Date() +"--------------");
             }
-
             //第5秒有下载任务【download】，刚开始运行时有下载任务[scanDirectory]
             Thread.sleep(20000);
         }
