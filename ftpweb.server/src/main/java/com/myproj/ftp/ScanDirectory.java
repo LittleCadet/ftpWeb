@@ -6,12 +6,11 @@ import org.apache.commons.net.ftp.FTPFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 用于扫描的服务器上的文件的创建时间和缓存中的时间进行比对，不一致时，触发下载任务
@@ -39,7 +38,9 @@ public class ScanDirectory
     //文件名+时间：用于缓存服务器上的对应的文件的时间
     private Map<String,String> cache = new HashMap<String,String>();
 
-    private final String SPLIT_LINUX = " 0 ";
+    private  String splite_linux = " ";
+
+    private Integer linux_count = 9;
 
     /**
      * 执行扫描任务
@@ -75,6 +76,7 @@ public class ScanDirectory
         int remoteIndex = remoteDownloadFilePath.lastIndexOf(SPLIT_FORWARD_SLASH);
         String remoteDir = remoteDownloadFilePath.substring(0, remoteIndex);
         String fileName = new File(remoteDownloadFilePath).getName();
+        List<String> list = new ArrayList<String>();
         try
         {
             //判定目录是否存在
@@ -98,16 +100,23 @@ public class ScanDirectory
                 //判定该文件在服务器上是否存在
                 if (fileName.equals(file.getName()))
                 {
-                    String[] temps = file.getRawListing().split(SPLIT_LINUX);
-                    if(temps.length != 2)
+                    String[] temps = file.getRawListing().split(splite_linux);
+
+                    for(int i = 0;i<temps.length; i++)
                     {
-                        logger.error("method : scanDetail()：the length of array is not 2");
+                        if(!StringUtils.isEmpty(temps[i]) )
+                        {
+                            list.add(temps[i]);
+                        }
+                    }
+                    if(list.size() != linux_count)
+                    {
+                        logger.error("method : scanDetail()：the length of array is not 9");
                         return false;
                     }
                     else
                     {
-                        String time = temps[1].split(" "+file.getName())[0];
-
+                        String time = list.get(5) + list.get(6) + list.get(7);
                         //比对时间
                         //首次调用或者服务器上该文件的时间与缓存时间不一致时，更新缓存
                         if(!compareProcess(fileName,time))

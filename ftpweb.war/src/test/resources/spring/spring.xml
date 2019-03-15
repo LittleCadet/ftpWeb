@@ -55,17 +55,17 @@
           p:basePackage="com.myproj.dao" p:sqlSessionFactoryBeanName="sqlSessionFactoryBean"/>
 
     <bean id="ftpDelete" class="com.myproj.ftp.FtpDelete">
-        <!--<property name="remoteDeleteFilePath" value="${remoteDeleteFilePath}"/>-->
+        <property name="remoteDeleteFilePath" value="${remoteDeleteFilePath}"/>
     </bean>
 
     <bean id="ftpDownload" class="com.myproj.ftp.FtpDownload">
-        <!--<property name="remoteDownloadFilePath" value="${remoteDownloadFilePath}"/>
-        <property name="localDownloadFilePath" value="${localDownloadFilePath}"/>-->
+        <property name="remoteDownloadFilePath" value="${remoteDownloadFilePath}"/>
+        <property name="localDownloadFilePath" value="${localDownloadFilePath}"/>
     </bean>
 
     <bean id="ftpUpload" class="com.myproj.ftp.FtpUpload">
-        <!--<property name="remoteUploadFilePath" value="${remoteUploadFilePath}"/>
-        <property name="localUploadFilePath" value="${localUploadFilePath}"/>-->
+        <property name="remoteUploadFilePath" value="${remoteUploadFilePath}"/>
+        <property name="localUploadFilePath" value="${localUploadFilePath}"/>
     </bean>
 
     <bean id = "ftpBatchUpload" class="com.myproj.ftp.FtpBatchUpload">
@@ -85,9 +85,9 @@
     </bean>
 
     <bean id="ftpUtil" class="com.myproj.tools.FtpUtil">
-        <!--<property name="host" value="${host}"/>
+        <property name="host" value="${host}"/>
         <property name="account" value="${account}"/>
-        <property name="password" value="${password}"/>-->
+        <property name="password" value="${password}"/>
         <property name="timeOut" value="${timeOut}"/>
         <property name="reTryTimes" value="${reTryTimes}"/>
     </bean>
@@ -164,13 +164,13 @@
         <property name="triggers">
             <list>
                 <!-- 执行定时下载服务器上文件-->
-                <!--<ref bean="ftpDownloadTrigger" />-->
+                <ref bean="ftpDownloadTrigger" />
 
                 <!-- 执行定时上传到服务器-->
-                <!--<ref bean="ftpUploadTrigger" />-->
+                <ref bean="ftpUploadTrigger" />
 
                 <!-- 执行定时扫描服务器上的文件，一旦变动即可触发下载任务-->
-                <!--<ref bean="scanDirectoryrigger" />-->
+                <ref bean="scanDirectoryrigger" />
             </list>
         </property>
     </bean>

@@ -107,7 +107,7 @@ public class FtpTest extends Base
             //20秒内只能有一次下载动作
             Thread.sleep(20000);
 
-            System.out.println("-------------开始执行文件上传操作-------------");
+            System.out.println("-------------开始执行文件上传操作：" + new Date() + "-------------");
 
             //更新服务器上的文件的时间
             upload();
