@@ -42,17 +42,6 @@
         <property name="password" value="${jdbc.password}"/>
     </bean>
 
-    <!-- 引入数据源 -->
-    <bean id="datasource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-          p:driverClass="${jdbc.driver}" p:jdbcUrl="${jdbc.url}" p:user="${jdbc.username}"
-          p:password="${jdbc.password}"/>
-
-    <!-- 添加sqlSessionFactoryBean -->
-    <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean"
-          p:dataSource-ref="datasource"/>
-    <!-- 扫描dao，创建sqlsession对象，之后引入了Mapper.xml文件，并 调用其中的增删改查方法 -->
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
-          p:basePackage="com.myproj.dao" p:sqlSessionFactoryBeanName="sqlSessionFactoryBean"/>
 
     <bean id="ftpDelete" class="com.myproj.ftp.FtpDelete">
         <property name="remoteDeleteFilePath" value="${remoteDeleteFilePath}"/>

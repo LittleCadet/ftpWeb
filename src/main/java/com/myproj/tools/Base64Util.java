@@ -1,7 +1,5 @@
 package com.myproj.tools;
 
-import org.junit.Test;
-
 import static org.apache.commons.net.util.Base64.decodeBase64;
 import static org.apache.commons.net.util.Base64.encodeBase64;;
 

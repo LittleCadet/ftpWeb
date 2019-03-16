@@ -1,6 +1,5 @@
 package com.myproj.tools;
 
-import com.myproj.ftp.FtpUpload;
 import org.apache.commons.net.ftp.FTPClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

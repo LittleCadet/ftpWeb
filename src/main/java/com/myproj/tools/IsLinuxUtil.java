@@ -1,7 +1,5 @@
 package com.myproj.tools;
 
-import org.junit.Test;
-
 import java.util.Properties;
 
 /**
