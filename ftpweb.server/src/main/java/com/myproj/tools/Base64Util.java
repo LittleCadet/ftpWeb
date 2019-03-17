@@ -33,11 +33,4 @@ public class Base64Util
     {
         return new String(decodeBase64(base64Data));
     }
-
-    @Test
-    public void showInfo()
-    {
-
-        System.out.println(Base64Util.encode("Sx920702".getBytes()));
-    }
 }

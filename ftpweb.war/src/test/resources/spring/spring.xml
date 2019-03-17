@@ -27,25 +27,79 @@
     <!-- 扫描component -->
     <context:component-scan base-package="com.myproj"/>
 
-    <!-- properties文件解密，重新放入xml中-->
-    <bean id="propertyConfigurer" class="com.myproj.config.PasswordEncryptConfigurer">
-        <property name="ignoreUnresolvablePlaceholders" value="true"/>
-        <property name="ignoreResourceNotFound" value="true"/>
-        <property name="locations">
+    <bean id = "enCodeFromPropertiesTest" class="ftpTest.EnCodeFromPropertiesTest">
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <bean id="dataSourcePostProcessor"
+          class="com.myproj.config.DataSourcePostProcessor"
+          lazy-init="true">
+        <property name="config">
+            <value>classpath:encrypt.properties</value>
+        </property>
+    </bean>
+
+    <!-- datasource start -->
+    <bean id="datasource"
+          class="com.alibaba.druid.pool.DruidDataSource" init-method="init"
+          destroy-method="close">
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+        <property name="filters" value="${filters}" />
+        <!-- 最大并发连接数 -->
+        <property name="maxActive" value="${maxActive}" />
+        <!-- 初始化连接数量 -->
+        <property name="initialSize" value="${initialSize}" />
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="${maxWait}" />
+        <!-- 最小空闲连接数 -->
+        <property name="minIdle" value="${minIdle}" />
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis"
+                  value="${timeBetweenEvictionRunsMillis}" />
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis"
+                  value="${minEvictableIdleTimeMillis}" />
+        <property name="validationQuery" value="${validationQuery}" />
+        <property name="testWhileIdle" value="${testWhileIdle}" />
+        <property name="testOnBorrow" value="${testOnBorrow}" />
+        <property name="testOnReturn" value="${testOnReturn}" />
+        <property name="maxOpenPreparedStatements"
+                  value="${maxOpenPreparedStatements}" />
+        <!-- 打开 removeAbandoned 功能 -->
+        <property name="removeAbandoned" value="${removeAbandoned}" />
+        <!-- 1800 秒，也就是 30 分钟 -->
+        <property name="removeAbandonedTimeout"
+                  value="${removeAbandonedTimeout}" />
+        <!-- 关闭 abanded 连接时输出错误日志 -->
+        <property name="logAbandoned" value="${logAbandoned}" />
+        <!--数据库解密 -->
+        <property name="passwordCallback"
+                  ref="dataSourcePostProcessor" />
+        <property name="connectProperties"
+                  value="password=${jdbc.password}" />
+
+        <!--慢sql日志打印-->
+        <property name="proxyFilters">
             <list>
-                <value>/jdbc.properties</value>
+                <ref bean="logFilter"/>
+                <ref bean="statFilter" />
             </list>
         </property>
     </bean>
 
-    <bean id = "EnCodeFromPropertiesTest" class="ftpTest.EnCodeFromPropertiesTest">
-        <property name="password" value="${jdbc.password}"/>
+    <!--慢sql日志打印-->
+    <bean id="statFilter" class="com.alibaba.druid.filter.stat.StatFilter" >
+        <property name="mergeSql" value="true" />
+        <property name="logSlowSql" value="true" />
+        <property name="slowSqlMillis" value="${slowSqlMillis}" />
     </bean>
 
-    <!-- 引入数据源 -->
-    <bean id="datasource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-          p:driverClass="${jdbc.driver}" p:jdbcUrl="${jdbc.url}" p:user="${jdbc.username}"
-          p:password="${jdbc.password}"/>
+    <!--慢sql日志打印-->
+    <bean id="logFilter"
+          class="com.alibaba.druid.filter.logging.Log4jFilter">
+    </bean>
 
     <!-- 添加sqlSessionFactoryBean -->
     <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean"
@@ -164,13 +218,13 @@
         <property name="triggers">
             <list>
                 <!-- 执行定时下载服务器上文件-->
-                <ref bean="ftpDownloadTrigger" />
+                <!--<ref bean="ftpDownloadTrigger" />-->
 
                 <!-- 执行定时上传到服务器-->
-                <ref bean="ftpUploadTrigger" />
+                <!--<ref bean="ftpUploadTrigger" />-->
 
                 <!-- 执行定时扫描服务器上的文件，一旦变动即可触发下载任务-->
-                <ref bean="scanDirectoryrigger" />
+                <!--<ref bean="scanDirectoryrigger" />-->
             </list>
         </property>
     </bean>

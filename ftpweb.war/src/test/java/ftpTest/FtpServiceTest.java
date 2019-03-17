@@ -1,18 +1,12 @@
 package ftpTest;
 
 import base.Base;
-import com.myproj.config.PasswordEncryptConfigurer;
 import com.myproj.entity.*;
-import com.myproj.ftp.FtpUpload;
 import com.myproj.service.DeleteService;
 import com.myproj.service.DownloadService;
-import com.myproj.service.ScanService;
 import com.myproj.service.UploadServcie;
-import com.myproj.tools.Base64Util;
-import com.myproj.tools.FtpUtil;
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 

@@ -17,7 +17,7 @@ public class EnCodeFromPropertiesTest extends InitSpring
     @Test
     public void showInfo()
     {
-        EnCodeFromPropertiesTest enCodeFromPropertiesTest = (EnCodeFromPropertiesTest)InitSpring.init().getBean("EnCodeFromPropertiesTest");
+        EnCodeFromPropertiesTest enCodeFromPropertiesTest = (EnCodeFromPropertiesTest)InitSpring.init().getBean("enCodeFromPropertiesTest");
         Assert.assertTrue(enCodeFromPropertiesTest.getPassword().contains(simple));
     }
 
