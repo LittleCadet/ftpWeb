@@ -2,19 +2,9 @@ package com.myproj.config;
 
 import com.alibaba.druid.util.DruidPasswordCallback;
 import com.myproj.tools.Base64Util;
-import lombok.Setter;
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang3.StringUtils;
-import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
-import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.Resource;
-
-import java.io.IOException;
 import java.util.Properties;
 
 /**
@@ -35,9 +25,6 @@ public class DataSourcePostProcessor extends DruidPasswordCallback
      * 日志类
      */
     private final static Logger logger = LoggerFactory.getLogger(DataSourcePostProcessor.class);
-
-    @Setter
-    private Resource config;
 
     public void setProperties(Properties properties)
     {
